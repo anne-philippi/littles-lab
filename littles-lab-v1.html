@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little's Lab: Flow Line & Buffer Studio | Anne Philippi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --color-uni-navy: #001a3f;
+      --color-uni-cyan: #008ac9;
+    }
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .bg-uni-navy { background-color: #001a3f; }
+    .text-uni-navy { color: #001a3f; }
+    .bg-uni-cyan { background-color: #008ac9; }
+    .text-uni-cyan { color: #008ac9; }
+    .border-uni-cyan { border-color: #008ac9; }
+    .tab-active {
+      background-color: #ffffff;
+      color: #001a3f;
+      font-weight: 600;
+      border-bottom: 3px solid #008ac9;
+    }
+    .tab-inactive {
+      color: #64748b;
+      font-weight: 500;
+    }
+    .tab-inactive:hover {
+      color: #001a3f;
+      background-color: #f1f5f9;
+    }
+    .modal-backdrop {
+      background-color: rgba(0, 26, 63, 0.45);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- TOP HEADER -->
+  <header class="bg-uni-navy text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-uni-cyan flex items-center justify-center font-bold text-white shadow">
+          LL
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">Little's Lab: Flow Line & Buffer Studio</h1>
+          <p class="text-xs text-sky-200">
+            Interactive Operations Management Simulator · Universität Mannheim
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <a 
+          href="https://www.linkedin.com/in/anne-philippi/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white text-uni-navy hover:bg-sky-50 transition border border-sky-100 shadow-sm"
+        >
+          <i data-lucide="linkedin" class="w-3.5 h-3.5 mr-1.5 text-[#0077b5]"></i>
+          Anne Philippi
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <div class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex space-x-2 overflow-x-auto">
+      <button onclick="switchTab('sim')" id="tab-btn-sim" class="tab-active py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5">
+        <i data-lucide="sliders" class="w-4 h-4"></i> Flow Line Simulator
+      </button>
+      <button onclick="switchTab('exercise')" id="tab-btn-exercise" class="tab-inactive py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5">
+        <i data-lucide="book-open" class="w-4 h-4"></i> Exercise 1 & Benchmark Chart
+      </button>
+      <button onclick="switchTab('delta')" id="tab-btn-delta" class="tab-inactive py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5">
+        <i data-lucide="split" class="w-4 h-4"></i> Strategy Comparison (+5 Buffers)
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
+
+    <!-- TAB 1: SIMULATOR -->
+    <div id="tab-sim" class="space-y-6">
+
+      <!-- KPI METRIC TILES WITH POPUPS -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        
+        <!-- Throughput -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              Throughput E[TH]
+              <button onclick="openModal('th')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
+          </div>
+          <div>
+            <div id="kpi-th" class="text-xl font-bold text-emerald-600">0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span></div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong></div>
+          </div>
+        </div>
+
+        <!-- Queue WIP -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              Queue WIP E[WIPq]
+              <button onclick="openModal('wipq')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="boxes" class="w-4 h-4 text-uni-cyan"></i>
+          </div>
+          <div>
+            <div id="kpi-wip" class="text-xl font-bold text-uni-cyan">0.00 <span class="text-xs font-normal text-slate-500">workpieces</span></div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong></div>
+          </div>
+        </div>
+
+        <!-- Capacity -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              Total Capacity
+              <button onclick="openModal('capacity')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+          </div>
+          <div>
+            <div id="kpi-cap" class="text-xl font-bold text-indigo-600">45 <span class="text-xs font-normal text-slate-500">slots</span></div>
+            <div id="kpi-strategy" class="text-[11px] text-slate-500 mt-1 truncate">Uniform (5×9)</div>
+          </div>
+        </div>
+
+        <!-- Cycle Time -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              Queue Time CTq
+              <button onclick="openModal('ctq')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
+          </div>
+          <div>
+            <div id="kpi-ctq" class="text-xl font-bold text-amber-600">0.00 <span class="text-xs font-normal text-slate-500">min</span></div>
+            <div class="text-[11px] text-slate-500 mt-1">Little's Law: <strong>WIPq / TH</strong></div>
+          </div>
+        </div>
+
+        <!-- BAS Blocking -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              BAS Blocking
+              <button onclick="openModal('blocking')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-500"></i>
+          </div>
+          <div>
+            <div id="kpi-blocking" class="text-xl font-bold text-rose-600">0.0%</div>
+            <div class="text-[11px] text-slate-500 mt-1">Downstream full</div>
+          </div>
+        </div>
+
+        <!-- Starvation -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span class="flex items-center gap-1">
+              Starvation
+              <button onclick="openModal('starvation')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+              </button>
+            </span>
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-orange-500"></i>
+          </div>
+          <div>
+            <div id="kpi-starvation" class="text-xl font-bold text-orange-500">0.0%</div>
+            <div class="text-[11px] text-slate-500 mt-1">Upstream empty</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FACTORY CANVAS & CONTROLS -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-uni-navy">10-Machine Serial Flow Line (BAS)</h3>
+            <p class="text-xs text-slate-500">Visualizing stations $M_1$–$M_{10}$ with 9 intermediate finite buffer racks $B_1$–$B_9$</p>
+          </div>
+          <div class="flex items-center flex-wrap gap-2">
+            <button id="btnPlay" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-uni-cyan text-white hover:bg-sky-600 transition flex items-center gap-1">
+              <i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause
+            </button>
+            <button id="btnReset" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+            </button>
+            <div class="flex items-center gap-1.5 ml-2 text-xs font-medium text-slate-600">
+              <span>Speed:</span>
+              <input type="range" id="speedRange" min="1" max="50" value="12" class="w-24 accent-sky-600">
+            </div>
+          </div>
+        </div>
+
+        <div class="relative overflow-x-auto rounded-lg bg-slate-900 border border-slate-800 p-2 shadow-inner">
+          <canvas id="flowCanvas" width="1120" height="230" class="mx-auto block"></canvas>
+        </div>
+
+        <!-- Presets -->
+        <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center flex-wrap gap-2">
+            <span class="text-xs font-semibold text-slate-700">Allocation Presets:</span>
+            <button onclick="applyPreset('base')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+              Exercise Baseline (5 each, 45 total)
+            </button>
+            <button onclick="applyPreset('center')" class="px-2.5 py-1 rounded text-xs font-semibold bg-sky-50 text-uni-cyan border border-sky-200 hover:bg-sky-100">
+              Center Bowl (+5, rec. 50)
+            </button>
+            <button onclick="applyPreset('front')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+              Front-Loaded (+5)
+            </button>
+            <button onclick="applyPreset('end')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+              End-Loaded (+5)
+            </button>
+          </div>
+          <div class="flex items-center gap-4 text-xs font-medium text-slate-600">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Working</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Blocked (Downstream full)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Starved (Upstream empty)</span>
+          </div>
+        </div>
+
+        <!-- Buffer Adjusters -->
+        <div class="mt-5 grid grid-cols-3 sm:grid-cols-9 gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+          <script>
+            for (let i = 1; i <= 9; i++) {
+              document.write(`
+                <div class="text-center">
+                  <div class="text-[11px] font-semibold text-slate-600 mb-1">Buffer ${i}</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <button onclick="adjustBuffer(${i-1}, -1)" class="w-5 h-5 bg-white border border-slate-300 rounded text-xs font-bold text-slate-700 hover:bg-slate-100">-</button>
+                    <span id="buf-val-${i-1}" class="text-xs font-bold text-uni-navy w-5">5</span>
+                    <button onclick="adjustBuffer(${i-1}, 1)" class="w-5 h-5 bg-white border border-slate-300 rounded text-xs font-bold text-slate-700 hover:bg-slate-100">+</button>
+                  </div>
+                </div>
+              `);
+            }
+          </script>
+        </div>
+      </div>
+
+      <!-- LIVE TELEMETRY BAR CHART -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-base font-bold text-uni-navy">Live Buffer Inventory Distribution</h3>
+            <p class="text-xs text-slate-500">Real-time simulation average WIP in each buffer vs. installed buffer capacity</p>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-1 bg-sky-50 text-uni-cyan rounded-md border border-sky-100">
+            Real-Time Telemetry
+          </span>
+        </div>
+        <div class="h-64">
+          <canvas id="liveChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: EXERCISE BENCHMARK -->
+    <div id="tab-exercise" class="hidden space-y-6">
+
+      <!-- Case Card -->
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-semibold text-uni-cyan uppercase tracking-wider">Exercise Session 3</span>
+            <h2 class="text-lg font-bold text-uni-navy">Problem 1: Design and Management of Flow Lines</h2>
+          </div>
+          <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium">Universität Mannheim</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed">
+          "A company operates a flow production line with 10 machines. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute. Currently, a total buffer capacity of 45 is installed. The buffer capacity is equally spread out over the line. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIPq] = 22.91</strong>. The distribution of the WIP is depicted in the graph below."
+        </p>
+      </div>
+
+      <!-- BENCHMARK GRAPH -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-uni-navy">Exercise Benchmark Distribution Graph</h3>
+              <p class="text-xs text-slate-500">Exact reproduction from Exercise Session 3: Problem 1</p>
+            </div>
+            <span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-medium">Verified Case Data</span>
+          </div>
+          <div class="h-72">
+            <canvas id="benchmarkChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Analytical Rationale -->
+        <div class="bg-sky-50 rounded-xl border border-sky-100 p-5 flex flex-col justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-uni-navy uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i data-lucide="lightbulb" class="w-4 h-4 text-uni-cyan"></i>
+              Why Does WIP Drop Downstream?
+            </h4>
+            <div class="text-xs text-slate-700 space-y-2.5 leading-relaxed">
+              <p>
+                Notice how buffer inventory descends monotonically from <strong>B1 (3.48)</strong> down to <strong>B9 (1.59)</strong> despite equal service rates ($\mu = 1$) and equal capacities ($C = 5$).
+              </p>
+              <p>
+                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers.
+              </p>
+              <p>
+                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously.
+              </p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sky-200/60 text-[11px] font-semibold text-uni-navy">
+            Total Queue WIP = 3.48 + 3.11 + ... + 1.59 = <strong>22.91 workpieces</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem Questions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-6 h-6 rounded-full bg-uni-navy text-white text-xs font-bold flex items-center justify-center">a</span>
+            <h3 class="text-sm font-bold text-uni-navy">Buffer Allocation (+5 Spaces)</h3>
+          </div>
+          <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
+            "The company wants to allocate 5 more buffer spaces. Make a suggestion where these buffer spaces should be allocated and provide the reasoning for your suggestion."
+          </p>
+          <div class="text-xs text-slate-700 space-y-2 leading-relaxed">
+            <p>
+              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> ($B_4, B_5, B_6$), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4).
+            </p>
+            <p>
+              <strong>Theoretical Rationale (The Bowl Phenomenon):</strong>
+              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central hydraulic damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back).
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-6 h-6 rounded-full bg-uni-navy text-white text-xs font-bold flex items-center justify-center">b</span>
+            <h3 class="text-sm font-bold text-uni-navy">General Rules of Thumb for Buffer Allocation</h3>
+          </div>
+          <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
+            "Discuss general rules of thumb for the buffer allocation problem."
+          </p>
+          <ul class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed">
+            <li><strong>The Bowl Shape:</strong> For balanced flow lines with identical stations, buffers should be allocated symmetrically, with maximum capacity in the center.</li>
+            <li><strong>Bottleneck Protection:</strong> If a station is slower ($t_e$ larger), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking).</li>
+            <li><strong>Variability Absorption:</strong> Stations with higher breakdown frequencies (MTBF/MTTR) or higher processing variance ($c_e^2$) require larger buffers.</li>
+            <li><strong>Diminishing Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically increases WIP with negligible throughput gain.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: STRATEGY DELTA COMPARISON -->
+    <div id="tab-delta" class="hidden space-y-6">
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+        <h2 class="text-base font-bold text-uni-navy mb-2">Strategy Comparison: Allocating +5 Buffer Spaces</h2>
+        <p class="text-xs text-slate-500 mb-6">Evaluating the throughput gain versus WIP penalty across 3 strategic buffer layouts (Total Capacity = 50).</p>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-semibold">
+                <th class="py-3 px-4">Strategy</th>
+                <th class="py-3 px-4">Buffer Distribution ($B_1$ to $B_9$)</th>
+                <th class="py-3 px-4">Expected Throughput $E[TH]$</th>
+                <th class="py-3 px-4">Expected WIP $E[WIP_q]$</th>
+                <th class="py-3 px-4">Marginal Efficiency ($\Delta TH / \Delta WIP$)</th>
+                <th class="py-3 px-4">Evaluation</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="bg-slate-50/50">
+                <td class="py-3 px-4 font-semibold text-slate-800">1. Baseline (Uniform)</td>
+                <td class="py-3 px-4 font-mono text-[11px]">5 - 5 - 5 - 5 - 5 - 5 - 5 - 5 - 5</td>
+                <td class="py-3 px-4 font-bold text-slate-900">0.764 pcs/min</td>
+                <td class="py-3 px-4">22.91 pcs</td>
+                <td class="py-3 px-4 text-slate-500">Benchmark</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-200 text-slate-700 font-semibold">Baseline</span></td>
+              </tr>
+              <tr class="bg-sky-50/70 border-l-4 border-l-uni-cyan">
+                <td class="py-3 px-4 font-semibold text-uni-navy">2. Center-Loaded (The Bowl)</td>
+                <td class="py-3 px-4 font-mono text-[11px] text-uni-cyan font-bold">5 - 5 - 6 - 7 - 7 - 6 - 5 - 5 - 4</td>
+                <td class="py-3 px-4 font-bold text-emerald-600">~ 0.779 pcs/min (+1.96%)</td>
+                <td class="py-3 px-4 font-medium">~ 25.10 pcs (+9.5%)</td>
+                <td class="py-3 px-4 font-bold text-emerald-700">0.0068 (Highest)</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-semibold">Optimal Choice</span></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold text-slate-800">3. Front-Loaded</td>
+                <td class="py-3 px-4 font-mono text-[11px]">7 - 7 - 6 - 5 - 5 - 5 - 5 - 5 - 5</td>
+                <td class="py-3 px-4 text-slate-700">~ 0.771 pcs/min (+0.91%)</td>
+                <td class="py-3 px-4 text-rose-600 font-medium">~ 26.80 pcs (+16.9%)</td>
+                <td class="py-3 px-4 text-slate-500">0.0018 (Poor)</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-rose-100 text-rose-800 font-semibold">Excess WIP Trap</span></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold text-slate-800">4. End-Loaded</td>
+                <td class="py-3 px-4 font-mono text-[11px]">5 - 5 - 5 - 5 - 5 - 5 - 6 - 7 - 7</td>
+                <td class="py-3 px-4 text-slate-700">~ 0.772 pcs/min (+1.04%)</td>
+                <td class="py-3 px-4 font-medium">~ 23.90 pcs (+4.3%)</td>
+                <td class="py-3 px-4 text-slate-500">0.0081 (Starved)</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 font-semibold">Underutilized</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- POPUP DIALOG WINDOW (MODAL) -->
+  <div id="infoModal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl border border-slate-200 max-w-lg w-full p-6 relative">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-3">
+        <div id="modalIconBox" class="w-8 h-8 rounded-lg flex items-center justify-center">
+          <i id="modalIcon" data-lucide="info" class="w-4 h-4"></i>
+        </div>
+        <h3 id="modalTitle" class="text-base font-bold text-uni-navy">Concept Definition</h3>
+      </div>
+
+      <div id="modalContent" class="text-xs text-slate-600 space-y-3 leading-relaxed border-t border-slate-100 pt-3">
+        <!-- Injected by JavaScript -->
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-100 flex justify-end">
+        <button onclick="closeModal()" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-md transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-uni-navy text-white text-xs mt-10 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-semibold">Developed by Anne Philippi</p>
+        <p class="text-slate-400 text-[11px]">
+          MSc Student in Operations & Supply Chain Management · Universität Mannheim
+        </p>
+      </div>
+      <div>
+        <a 
+          href="https://www.linkedin.com/in/anne-philippi/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#0077b5] text-white hover:bg-[#005f93] transition shadow-sm"
+        >
+          <i data-lucide="linkedin" class="w-3.5 h-3.5 mr-1.5"></i>
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // CONCEPT DEFINITIONS REPOSITORY
+    const conceptData = {
+      th: {
+        title: "Expected Throughput E[TH]",
+        icon: "trending-up",
+        colorClass: "bg-emerald-100 text-emerald-700",
+        html: `
+          <p><strong>Definition:</strong> The average rate at which completed workpieces exit the final station ($M_{10}$) of the production system, measured in parts per unit time (workpieces/min).</p>
+          <p><strong>Theoretical Context:</strong> Even though every station has an isolated mean processing speed of $\\mu = 1.0$, the baseline line achieves only <strong>E[TH] = 0.764</strong>. This shortfall is the <em>variability penalty</em> caused by stochastic blocking and starvation cascading across coupled machines.</p>
+          <p><strong>Optimization Goal:</strong> Maximizing $E[TH]$ by strategically allocating buffer storage to decouple adjacent machines from momentary fluctuations.</p>
+        `
+      },
+      wipq: {
+        title: "Expected Work In Process in Queues E[WIPq]",
+        icon: "boxes",
+        colorClass: "bg-sky-100 text-uni-cyan",
+        html: `
+          <p><strong>Definition:</strong> The expected total number of workpieces physically waiting inside the intermediate decoupling buffers ($B_1$ through $B_9$), excluding parts currently inside the machines being processed.</p>
+          <p><strong>Theoretical Context:</strong> In the baseline 45-capacity line, $E[WIP_q] = 22.91$. Higher buffer capacity increases throughput but also increases total inventory.</p>
+          <p><strong>Trade-Off:</strong> Work in process ties up working capital, occupies physical floor space, and inflates lead time according to Little's Law.</p>
+        `
+      },
+      capacity: {
+        title: "Total Installed Buffer Capacity",
+        icon: "layers",
+        colorClass: "bg-indigo-100 text-indigo-700",
+        html: `
+          <p><strong>Definition:</strong> The sum of maximum workpiece storage capacities across all intermediate buffers in the flow line ($C_{total} = \\sum_{i=1}^{9} C_i$).</p>
+          <p><strong>Problem 1 Scenario:</strong> The baseline has 45 total slots (5 slots per buffer). Question (a) tests how best to allocate <strong>5 additional spaces</strong> (reaching 50 slots total).</p>
+          <p><strong>Key Principle:</strong> Buffer allocation exhibits diminishing marginal returns. The first few slots provide substantial throughput decoupling; subsequent slots mostly accumulate idle inventory.</p>
+        `
+      },
+      ctq: {
+        title: "Queue Cycle Time (CTq) & Little's Law",
+        icon: "clock",
+        colorClass: "bg-amber-100 text-amber-700",
+        html: `
+          <p><strong>Definition:</strong> The average time a workpiece spends waiting idle inside intermediate buffers before being processed by the next downstream machine.</p>
+          <p><strong>Little's Law Formula:</strong> 
+            <span class="block bg-slate-50 p-2 rounded text-center font-mono my-1 font-semibold text-slate-800">
+              E[WIPq] = E[TH] × CTq  ⟹  CTq = E[WIPq] / E[TH]
+            </span>
+          </p>
+          <p><strong>In this Exercise:</strong> At baseline ($E[WIP_q] = 22.91$ and $E[TH] = 0.764$), $CT_q = 22.91 / 0.764 \\approx 29.98\\text{ minutes}$. An item spends nearly 30 minutes sitting idle in intermediate storage alone.</p>
+        `
+      },
+      blocking: {
+        title: "BAS Blocking (Blocking-After-Service)",
+        icon: "shield-alert",
+        colorClass: "bg-rose-100 text-rose-700",
+        html: `
+          <p><strong>Definition:</strong> A machine finishes processing an item, but the immediately adjacent downstream buffer is full ($B_i = C_i$).</p>
+          <p><strong>BAS Operational Mechanism:</strong> Under the <em>Blocking-After-Service</em> convention, the machine cannot release the finished piece and cannot start working on the next job. It remains frozen ("blocked") until the downstream machine consumes an item and creates an open slot.</p>
+          <p><strong>Propagation:</strong> Blocking waves travel <strong>upstream</strong> (backward against the direction of physical product flow).</p>
+        `
+      },
+      starvation: {
+        title: "Station Starvation",
+        icon: "alert-triangle",
+        colorClass: "bg-orange-100 text-orange-700",
+        html: `
+          <p><strong>Definition:</strong> A machine is completely functional and ready to work, but its immediately preceding upstream buffer is empty ($B_{i-1} = 0$).</p>
+          <p><strong>Operational Impact:</strong> The machine is forced into an idle state ("starved"), wasting productive line capacity.</p>
+          <p><strong>Propagation:</strong> Starvation waves travel <strong>downstream</strong> (forward in the direction of product flow). Station $M_1$ is never starved (infinite raw material supply), while station $M_{10}$ experiences severe starvation waves if upstream lines stall.</p>
+        `
+      }
+    };
+
+    function openModal(conceptKey) {
+      const data = conceptData[conceptKey];
+      if (!data) return;
+
+      document.getElementById('modalTitle').innerText = data.title;
+      document.getElementById('modalContent').innerHTML = data.html;
+
+      const iconBox = document.getElementById('modalIconBox');
+      iconBox.className = `w-8 h-8 rounded-lg flex items-center justify-center ${data.colorClass}`;
+      iconBox.innerHTML = `<i data-lucide="${data.icon}" class="w-4 h-4"></i>`;
+
+      lucide.createIcons();
+      document.getElementById('infoModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('infoModal').classList.add('hidden');
+    }
+
+    document.getElementById('infoModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('infoModal')) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+
+    // SIMULATION ENGINE
+    const NUM_M = 10;
+    let capacities = Array(NUM_M - 1).fill(5);
+    let simTime = 0, completed = 0, isRunning = true;
+    let cumulativeWIP = 0, cumulativeBlocked = 0, cumulativeStarved = 0;
+
+    const machines = Array.from({ length: NUM_M }, () => ({
+      busy: false, blocked: false, timeLeft: 0
+    }));
+    const buffers = Array(NUM_M - 1).fill(0);
+    const bufferSums = Array(NUM_M - 1).fill(0);
+
+    function expRand(rate = 1.0) { return -Math.log(1 - Math.random()) / rate; }
+
+    function adjustBuffer(index, delta) {
+      capacities[index] = Math.max(0, Math.min(15, capacities[index] + delta));
+      document.getElementById(`buf-val-${index}`).innerText = capacities[index];
+      updateTotalCapacityKPI("Custom");
+      resetStats();
+    }
+
+    function applyPreset(type) {
+      if (type === 'base') {
+        capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
+        updateTotalCapacityKPI("Uniform (5×9)");
+      } else if (type === 'center') {
+        capacities = [5, 5, 6, 7, 7, 6, 5, 5, 4];
+        updateTotalCapacityKPI("Center Bowl (+5)");
+      } else if (type === 'front') {
+        capacities = [7, 7, 6, 5, 5, 5, 5, 5, 5];
+        updateTotalCapacityKPI("Front-Loaded (+5)");
+      } else if (type === 'end') {
+        capacities = [5, 5, 5, 5, 5, 5, 6, 7, 7];
+        updateTotalCapacityKPI("End-Loaded (+5)");
+      }
+      for (let i = 0; i < 9; i++) {
+        document.getElementById(`buf-val-${i}`).innerText = capacities[i];
+      }
+      resetStats();
+    }
+
+    function updateTotalCapacityKPI(name) {
+      const sum = capacities.reduce((a, b) => a + b, 0);
+      document.getElementById('kpi-cap').innerHTML = `${sum} <span class="text-xs font-normal text-slate-500">slots</span>`;
+      document.getElementById('kpi-strategy').innerText = name;
+    }
+
+    function resetStats() {
+      simTime = 0; completed = 0; cumulativeWIP = 0;
+      cumulativeBlocked = 0; cumulativeStarved = 0;
+      buffers.fill(0);
+      bufferSums.fill(0);
+      machines.forEach(m => { m.busy = false; m.blocked = false; m.timeLeft = 0; });
+    }
+
+    function simStep(dt) {
+      simTime += dt;
+
+      // 1. Process active machines
+      for (let i = 0; i < NUM_M; i++) {
+        const m = machines[i];
+        if (m.busy && !m.blocked) {
+          m.timeLeft -= dt;
+          if (m.timeLeft <= 0) {
+            m.busy = false;
+            if (i === NUM_M - 1) {
+              completed++;
+            } else if (buffers[i] < capacities[i]) {
+              buffers[i]++;
+            } else {
+              m.blocked = true;
+            }
+          }
+        }
+      }
+
+      // 2. Unblock stalled machines
+      for (let i = NUM_M - 2; i >= 0; i--) {
+        if (machines[i].blocked && buffers[i] < capacities[i]) {
+          buffers[i]++;
+          machines[i].blocked = false;
+        }
+      }
+
+      // 3. Feed idle machines
+      let starvedCount = 0, blockedCount = 0;
+      for (let i = 0; i < NUM_M; i++) {
+        const m = machines[i];
+        if (m.blocked) blockedCount++;
+        if (!m.busy && !m.blocked) {
+          if (i === 0) {
+            m.busy = true;
+            m.timeLeft = expRand(1.0);
+          } else if (buffers[i - 1] > 0) {
+            buffers[i - 1]--;
+            m.busy = true;
+            m.timeLeft = expRand(1.0);
+          } else {
+            starvedCount++;
+          }
+        }
+      }
+
+      const currentWip = buffers.reduce((a, b) => a + b, 0);
+      cumulativeWIP += currentWip * dt;
+      cumulativeBlocked += (blockedCount / NUM_M) * dt;
+      cumulativeStarved += (starvedCount / NUM_M) * dt;
+
+      for (let i = 0; i < 9; i++) {
+        bufferSums[i] += buffers[i] * dt;
+      }
+    }
+
+    // CANVAS DRAWING
+    const canvas = document.getElementById("flowCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function drawFloor() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(30, 130);
+      ctx.lineTo(1090, 130);
+      ctx.stroke();
+
+      const startX = 35;
+      const mWidth = 46, mHeight = 64, bWidth = 62;
+      const y = 80;
+
+      for (let i = 0; i < NUM_M; i++) {
+        const mx = startX + i * (mWidth + bWidth);
+        const m = machines[i];
+
+        ctx.fillStyle = m.blocked ? "#ef4444" : m.busy ? "#10b981" : "#f59e0b";
+        ctx.beginPath();
+        ctx.roundRect(mx, y, mWidth, mHeight, 6);
+        ctx.fill();
+
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 11px sans-serif";
+        ctx.fillText(`M${i + 1}`, mx + 13, y + 26);
+
+        ctx.font = "9px sans-serif";
+        const stateText = m.blocked ? "BLOCKED" : m.busy ? "WORK" : "STARVE";
+        ctx.fillText(stateText, mx + 5, y + 48);
+
+        if (i < NUM_M - 1) {
+          const bx = mx + mWidth + 8;
+          const cap = capacities[i];
+          const curr = buffers[i];
+
+          ctx.strokeStyle = "#334155";
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(bx, y + 10, bWidth - 16, 46);
+
+          const fillRatio = cap > 0 ? (curr / cap) : 0;
+          const fillHeight = fillRatio * 44;
+          ctx.fillStyle = "#008ac9";
+          ctx.fillRect(bx + 1, y + 55 - fillHeight, bWidth - 18, fillHeight);
+
+          ctx.fillStyle = "#94a3b8";
+          ctx.font = "10px sans-serif";
+          ctx.fillText(`B${i + 1}`, bx + 8, y + 72);
+          ctx.fillText(`${curr}/${cap}`, bx + 6, y + 84);
+        }
+      }
+    }
+
+    // LIVE CHART
+    const ctxLive = document.getElementById("liveChart").getContext("2d");
+    const liveChart = new Chart(ctxLive, {
+      type: "bar",
+      data: {
+        labels: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
+        datasets: [
+          {
+            label: "Expected WIP in Buffer E[WIPq,i]",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: "#008ac9",
+            borderRadius: 4
+          },
+          {
+            type: "line",
+            label: "Installed Buffer Capacity",
+            data: capacities,
+            borderColor: "#ef4444",
+            borderDash: [6, 4],
+            borderWidth: 2,
+            pointRadius: 3,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "top", labels: { boxWidth: 12, font: { size: 11 } } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 7, grid: { color: "#f1f5f9" } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // BENCHMARK CASE CHART
+    const ctxBench = document.getElementById("benchmarkChart").getContext("2d");
+    const benchData = [3.48, 3.11, 2.89, 2.70, 2.55, 2.39, 2.21, 1.97, 1.59];
+    new Chart(ctxBench, {
+      type: "bar",
+      data: {
+        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        datasets: [
+          {
+            label: "Expected inventory in the buffer",
+            data: benchData,
+            backgroundColor: "#5ba2d7",
+            borderRadius: 2
+          },
+          {
+            type: "line",
+            label: "Buffer capacity",
+            data: Array(9).fill(5),
+            borderColor: "#ea580c",
+            borderDash: [8, 5],
+            borderWidth: 3,
+            pointRadius: 4,
+            pointBackgroundColor: "#ea580c",
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { boxWidth: 14, font: { size: 11 } } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} workpieces`
+            }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 6, ticks: { stepSize: 1 }, grid: { color: "#f1f5f9" } },
+          x: { title: { display: true, text: "Buffer", font: { size: 12, weight: "bold" } }, grid: { display: false } }
+        }
+      }
+    });
+
+    // RUNTIME LOOP
+    let lastTime = performance.now();
+    let chartTimer = 0;
+
+    function loop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (isRunning) {
+        const speed = parseInt(document.getElementById("speedRange").value);
+        const subSteps = 10 * speed;
+        for (let s = 0; s < subSteps; s++) {
+          simStep(dt / 10);
+        }
+      }
+
+      drawFloor();
+
+      if (simTime > 0) {
+        const currentTH = (completed / simTime);
+        const currentWIP = (cumulativeWIP / simTime);
+        const ctq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+        const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
+        const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
+
+        document.getElementById("kpi-th").innerHTML = `${currentTH.toFixed(3)} <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
+        document.getElementById("kpi-wip").innerHTML = `${currentWIP.toFixed(2)} <span class="text-xs font-normal text-slate-500">workpieces</span>`;
+        document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+        document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
+        document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
+
+        chartTimer += dt;
+        if (chartTimer > 0.4) {
+          chartTimer = 0;
+          for (let i = 0; i < 9; i++) {
+            liveChart.data.datasets[0].data[i] = (bufferSums[i] / simTime).toFixed(2);
+          }
+          liveChart.data.datasets[1].data = capacities;
+          liveChart.update('none');
+        }
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    // TABS
+    function switchTab(tabId) {
+      ['sim', 'exercise', 'delta'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        document.getElementById(`tab-btn-${t}`).className = 'tab-inactive py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5';
+      });
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tab-btn-${tabId}`).className = 'tab-active py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5';
+    }
+
+    // HANDLERS
+    document.getElementById("btnPlay").onclick = (e) => {
+      isRunning = !isRunning;
+      e.target.innerHTML = isRunning 
+        ? `<i data-lucide="pause" class="w-3.5 h-3.5 inline mr-1"></i> Pause` 
+        : `<i data-lucide="play" class="w-3.5 h-3.5 inline mr-1"></i> Resume`;
+      lucide.createIcons();
+    };
+    document.getElementById("btnReset").onclick = resetStats;
+
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
