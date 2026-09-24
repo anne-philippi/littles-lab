@@ -110,7 +110,7 @@
           </div>
           <div>
             <div id="kpi-th" class="text-xl font-bold text-emerald-600">0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong>[cite: 1]</div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong></div>
           </div>
         </div>
 
@@ -127,7 +127,7 @@
           </div>
           <div>
             <div id="kpi-wip" class="text-xl font-bold text-uni-cyan">0.00 <span class="text-xs font-normal text-slate-500">workpieces</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong>[cite: 1]</div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong></div>
           </div>
         </div>
 
@@ -206,7 +206,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
           <div>
             <h3 class="text-base font-bold text-uni-navy">10-Machine Serial Flow Line (BAS)</h3>
-            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub>[cite: 1]</p>
+            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub></p>
           </div>
           <div class="flex items-center flex-wrap gap-2">
             <!-- PLAY/PAUSE -->
@@ -242,10 +242,10 @@
           <div class="flex items-center flex-wrap gap-2">
             <span class="text-xs font-semibold text-slate-700">Allocation Presets:</span>
             <button onclick="applyPreset('base')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
-              Exercise Baseline (5 each, 45 total)[cite: 1]
+              Exercise Baseline (5 each, 45 total)
             </button>
             <button onclick="applyPreset('center')" class="px-2.5 py-1 rounded text-xs font-semibold bg-sky-50 text-uni-cyan border border-sky-200 hover:bg-sky-100">
-              Center Bowl (+5, rec. 50)[cite: 1]
+              Center Bowl (+5, rec. 50)
             </button>
             <button onclick="applyPreset('front')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
               Front-Loaded (+5)
@@ -391,6 +391,47 @@
             <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer outage durations (higher <strong>MTTR</strong>), or higher natural process variance (<i>c<sub>e</sub></i><sup>2</sup>) require larger buffers to decouple the surrounding line.</li>
             <li><strong>Diminishing Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically increases WIP with negligible throughput gain.</li>
           </ul>
+        </div>
+      </div>
+
+      <!-- METHODOLOGY & SIMULATION DISCLAIMER -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-slate-700 shadow-xs">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="shield-check" class="w-4 h-4 text-uni-cyan"></i>
+          <h4 class="text-xs font-bold text-uni-navy uppercase tracking-wider">Methodology & Simulation Disclaimer</h4>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Stochastic Engine
+            </div>
+            <p class="text-slate-600 text-[11px]">
+              Line dynamics and buffer occupancy are modeled via continuous discrete-event Monte Carlo simulation. Effective processing times are generated using inverse transform sampling: 
+              <span class="block font-mono text-[10px] bg-slate-50 p-1 rounded my-1 border border-slate-100 text-slate-800">
+                T = -ln(1 - U) / &mu;
+              </span>
+              operating under the standard Blocking-After-Service (BAS) protocol[cite: 1].
+            </p>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
+              <i data-lucide="activity" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Sample Variance vs. Benchmark
+            </div>
+            <p class="text-slate-600 text-[11px]">
+              The exercise benchmark targets (E[TH] = 0.764, E[WIP<sub>q</sub>] = 22.91) represent asymptotic steady-state solutions derived from analytical queueing decompositions[cite: 1]. Live browser simulations converge toward these values, but exhibit natural stochastic noise over finite runs. Use <strong>Steady State</strong> to jump straight to convergence.
+            </p>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
+              <i data-lucide="factory" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Industrial Distribution Context
+            </div>
+            <p class="text-slate-600 text-[11px]">
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, <i>c<sub>e</sub></i> = 1.0) for mathematical tractability[cite: 1]. Real-world manufacturing assembly stations usually display lower natural cycle-time variance (<i>c<sub>e</sub></i> &approx; 0.2&ndash;0.5), with variability instead dominated by discrete machine outages modeled via MTTF and MTTR.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -734,14 +775,12 @@
 
     // FAST FORWARD TO STEADY STATE ENGINE
     function fastForwardToSteadyState() {
-      // Run 15,000 sub-steps instantaneously without animation lag
       const steps = 15000;
       const stepSize = 0.05;
       for (let s = 0; s < steps; s++) {
         simStep(stepSize);
       }
       
-      // Update Telemetry Immediately
       const currentTH = (completed / simTime);
       const currentWIP = (cumulativeWIP / simTime);
       const ctq = currentTH > 0 ? (currentWIP / currentTH) : 0;
