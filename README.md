@@ -1,46 +1,55 @@
-# Little's Lab: Flow Line & Buffer Allocation Studio
+# Little's Lab: Flow Line & Buffer Studio
 
-An interactive web simulator and visual dashboard modeling a 10-machine serial flow line with intermediate decoupling buffers, designed around **Exercise Session 3: Problem 1 (Design and Management of Flow Lines)** at **Universität Mannheim**.
+An interactive discrete-event simulator and pedagogical decision-support tool designed for Operations Management coursework at the **University of Mannheim**.
 
----
+The application models stochastic serial flow production lines, visualizes the mechanics of **Blocking-After-Service (BAS)** and **Starvation**, demonstrates **Little's Law**, and benchmarks optimal buffer distribution profiles against the **Bowl Phenomenon**
 
-## 🏭 Overview
-
-In serial manufacturing systems, deterministic models fall short because stochastic variance triggers two disruptive phenomena:
-1. **Blocking-After-Service (BAS)**: An upstream station finishes a part but cannot discharge it because the downstream buffer is full.
-2. **Starvation**: A downstream station sits idle because the upstream buffer is empty.
-
-**Little's Lab** allows students and researchers to interactively explore how buffer capacity decouples stations, maximizes expected throughput $E[TH]$, minimizes expected work in process $E[WIP_q]$, and verifies Little's Law ($WIP = TH \times CT$) in real time.
+Live Demo: [littles-lab.vercel.app](https://littles-lab.vercel.app/)
 
 ---
 
-## 🚀 Key Features
+## 🏭 Core Operations Management Concepts Modeled
 
-* **10-Station Animated Factory Canvas**: Live simulation of $M_1 \dots M_{10}$ with 9 intermediate buffers ($B_1 \dots B_9$), tracking real-time station states (Working, Blocked, Starved).
-* **Empirical Benchmark Match**: Validated baseline replicating the exact exercise conditions:
-  * Effective processing times: $\mu = 1.0\text{ pcs/min}$ (exponentially distributed)
-  * Uniform baseline capacity: 5 per buffer (45 total)
-  * Target output: $E[TH] \approx 0.764\text{ pcs/min}$, $E[WIP_q] \approx 22.91\text{ workpieces}$
-* **Exercise 1 Benchmark Recreation**: Interactive high-resolution chart matching the decreasing buffer inventory curve ($B_1 = 3.48$ down to $B_9 = 1.59$) with theoretical explanations.
-* **The +5 Buffer Allocation Experiment**: Interactive comparison testing the optimal **Bowl Phenomenon** against front-loaded and end-loaded allocations.
-* **Concept Modals**: In-app educational dialogs for $E[TH]$, $E[WIP_q]$, $CT_q$, BAS Blocking, and Starvation.
-
----
-
-## 🛠️ Tech Stack
-
-* **Frontend**: HTML5, Canvas API, Tailwind CSS
-* **Visualization**: Chart.js
-* **Icons**: Lucide Icons
-* **Architecture**: Standalone client-side application (zero dependencies, zero build steps)
+1. **Serial Flow Line Dynamics**:
+   * Simulates a $10$-machine line with $9$ intermediate decoupling buffers ($M_1 \to B_1 \to M_2 \dots B_9 \to M_{10}$)[cite: 1].
+   * Baseline targets: $E[TH] \approx 0.764 \text{ pcs/min}$ and $E[WIP_q] \approx 22.91 \text{ workpieces}$ under uniform capacity ($C_i = 5$)[cite: 1].
+2. **BAS (Blocking-After-Service)**:
+   * When machine $M_i$ completes processing but buffer $B_i$ is at full capacity ($B_i = C_i$), $M_i$ freezes in a blocked state, unable to release the item or start the next job. Blocking waves propagate upstream[cite: 1].
+3. **Starvation**:
+   * When machine $M_i$ is idle but preceding buffer $B_{i-1} = 0$, $M_i$ is starved of workpieces. Station $M_1$ is never starved (infinite raw material supply), whereas $M_{10}$ suffers cascading downstream starvation waves[cite: 1].
+4. **The Bowl Phenomenon & Buffer Allocation**:
+   * Evaluates strategic allocation of additional buffer storage ($+5$ units, $C_{\text{total}} = 50$)[cite: 1].
+   * Demonstrates that allocating decoupling capacity symmetrically toward the center of the line ($B_4, B_5, B_6$) maximizes marginal throughput while dampening two-way blocking and starvation shockwaves[cite: 1].
+5. **Little's Law Validation**:
+   * Dynamically evaluates queue cycle time:
+     $$CT_q = \frac{E[WIP_q]}{E[TH]}$$
 
 ---
 
-## 📦 Getting Started
+## ✨ Features & Architecture
 
-Clone the repository and open `index.html` in any web browser:
+* **Stochastic Monte Carlo Engine**: Processing times are continuously sampled via inverse transform sampling:
+  $$T = -\frac{\ln(1 - U)}{\mu}$$
+  with rate $\mu = 1.0$ ($c_e = 1.0$)[cite: 1].
+* **Real-Time Canvas Telemetry**: Central conveyor track with color-coded status badges for each station:
+  * 🟢 **Working**
+  * 🔴 **Blocked** (downstream buffer full)
+  * 🟠 **Starved** (upstream buffer empty)
+* **Instant Steady-State Fast-Forward**: A dedicated computational bypass running $15{,}000$ sub-steps instantaneously to skip the transient warm-up phase and converge directly to asymptotic steady-state metrics.
+* **Dynamic Adaptive Chart Scaling**: Live telemetry bar chart with auto-scaling y-axes that adapt when custom buffer capacities exceed standard limits ($C_i > 7$).
+* **Course Benchmark Reference**: Direct reference reproduction of Exercise Session 3 (Problem 1) including analytical proofs, distribution graphs, and rules of thumb (MTTF, MTTR, bottleneck isolation)[cite: 1].
+* **Strategy Comparison Table**: Multi-scenario evaluation showing marginal decoupling efficiency:
+  $$\frac{\Delta E[TH]}{\Delta E[WIP_q]}$$
+* **Mannheim Branding**: Schloss Navy (`#001A3F`) and Academic Cyan (`#008AC9`) design hierarchy.
+* **Zero Dependencies**: Pure, standalone vanilla HTML5/JavaScript, Tailwind CSS (CDN), Chart.js, and Lucide icons.
 
-```bash
-git clone [https://github.com/](https://github.com/)<anne-philippi>/littles-lab.git
-cd littles-lab
-open index.html
+---
+
+## 🚀 Local Deployment
+
+Since Little's Lab is a single-file application, no build steps or package managers (`npm`/`yarn`) are required:
+
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/anne-philippi/littles-lab.git](https://github.com/anne-philippi/littles-lab.git)
+   cd littles-lab
