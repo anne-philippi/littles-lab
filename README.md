@@ -41,6 +41,6 @@ In serial manufacturing systems, deterministic models fall short because stochas
 Clone the repository and open `index.html` in any web browser:
 
 ```bash
-git clone [https://github.com/](https://github.com/)<your-username>/littles-lab.git
+git clone [https://github.com/](https://github.com/)<anne-philippi>/littles-lab.git
 cd littles-lab
 open index.html
