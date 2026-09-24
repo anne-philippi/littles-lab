@@ -312,7 +312,7 @@
         </div>
 
         <p class="text-sm text-slate-700 leading-relaxed">
-          "A company operates a flow production line with 10 machines[cite: 1]. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute[cite: 1]. Currently, a total buffer capacity of 45 is installed[cite: 1]. The buffer capacity is equally spread out over the line[cite: 1]. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = 22.91</strong>[cite: 1]. The distribution of the WIP is depicted in the graph below[cite: 1]."
+          "A company operates a flow production line with 10 machines. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute. Currently, a total buffer capacity of 45 is installed. The buffer capacity is equally spread out over the line. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = 22.91</strong>. The distribution of the WIP is depicted in the graph below."
         </p>
       </div>
 
@@ -340,18 +340,18 @@
             </h4>
             <div class="text-xs text-slate-700 space-y-2.5 leading-relaxed">
               <p>
-                Notice how buffer inventory descends monotonically from <strong>B<sub>1</sub> (3.48)</strong> down to <strong>B<sub>9</sub> (1.59)</strong> despite equal service rates (&mu; = 1.0) and equal capacities (<i>C</i> = 5)[cite: 1, 3].
+                Notice how buffer inventory descends monotonically from <strong>B<sub>1</sub> (3.48)</strong> down to <strong>B<sub>9</sub> (1.59)</strong> despite equal service rates (&mu; = 1.0) and equal capacities (<i>C</i> = 5).
               </p>
               <p>
-                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers[cite: 1].
+                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers.
               </p>
               <p>
-                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously[cite: 1].
+                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously.
               </p>
             </div>
           </div>
           <div class="mt-4 pt-3 border-t border-sky-200/60 text-[11px] font-semibold text-uni-navy">
-            Total Queue WIP = 3.48 + 3.11 + ... + 1.59 = <strong>22.91 workpieces</strong>[cite: 1, 3]
+            Total Queue WIP = 3.48 + 3.11 + ... + 1.59 = <strong>22.91 workpieces</strong>
           </div>
         </div>
       </div>
@@ -364,15 +364,15 @@
             <h3 class="text-sm font-bold text-uni-navy">Buffer Allocation (+5 Spaces)</h3>
           </div>
           <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
-            "The company wants to allocate 5 more buffer spaces. Make a suggestion where these buffer spaces should be allocated and provide the reasoning for your suggestion."[cite: 1]
+            "The company wants to allocate 5 more buffer spaces. Make a suggestion where these buffer spaces should be allocated and provide the reasoning for your suggestion."
           </p>
           <div class="text-xs text-slate-700 space-y-2 leading-relaxed">
             <p>
-              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers B<sub>4</sub>, B<sub>5</sub>, and B<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4)[cite: 1].
+              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers B<sub>4</sub>, B<sub>5</sub>, and B<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4).
             </p>
             <p>
               <strong>Theoretical Rationale (The Bowl Phenomenon):</strong>
-              Starvation waves propagate downstream while blocking waves propagate upstream[cite: 1]. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back)[cite: 1].
+              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back).
             </p>
           </div>
         </div>
@@ -383,7 +383,7 @@
             <h3 class="text-sm font-bold text-uni-navy">General Rules of Thumb for Buffer Allocation</h3>
           </div>
           <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
-            "Discuss general rules of thumb for the buffer allocation problem."[cite: 1]
+            "Discuss general rules of thumb for the buffer allocation problem."
           </p>
           <ul class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed">
             <li><strong>The Bowl Shape:</strong> For balanced flow lines with identical stations, buffers should be allocated symmetrically, with maximum capacity in the center.</li>
@@ -411,7 +411,7 @@
               <span class="block font-mono text-[10px] bg-slate-50 p-1 rounded my-1 border border-slate-100 text-slate-800">
                 T = -ln(1 - U) / &mu;
               </span>
-              operating under the standard Blocking-After-Service (BAS) protocol[cite: 1].
+              operating under the standard Blocking-After-Service (BAS) protocol.
             </p>
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
@@ -420,7 +420,7 @@
               Sample Variance vs. Benchmark
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise benchmark targets (E[TH] = 0.764, E[WIP<sub>q</sub>] = 22.91) represent asymptotic steady-state solutions derived from analytical queueing decompositions[cite: 1]. Live browser simulations converge toward these values, but exhibit natural stochastic noise over finite runs. Use <strong>Steady State</strong> to jump straight to convergence.
+              The exercise benchmark targets (E[TH] = 0.764, E[WIP<sub>q</sub>] = 22.91) represent asymptotic steady-state solutions derived from analytical queueing decompositions. Live browser simulations converge toward these values, but exhibit natural stochastic noise over finite runs. Use <strong>Steady State</strong> to jump straight to convergence.
             </p>
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
@@ -429,7 +429,7 @@
               Industrial Distribution Context
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise assumes memoryless exponential service times (&mu; = 1.0, <i>c<sub>e</sub></i> = 1.0) for mathematical tractability[cite: 1]. Real-world manufacturing assembly stations usually display lower natural cycle-time variance (<i>c<sub>e</sub></i> &approx; 0.2&ndash;0.5), with variability instead dominated by discrete machine outages modeled via MTTF and MTTR.
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, <i>c<sub>e</sub></i> = 1.0) for mathematical tractability. Real-world manufacturing assembly stations usually display lower natural cycle-time variance (<i>c<sub>e</sub></i> &approx; 0.2&ndash;0.5), with variability instead dominated by discrete machine outages modeled via MTTF and MTTR.
             </p>
           </div>
         </div>
@@ -441,7 +441,7 @@
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-2">Strategy Comparison: Allocating +5 Buffer Spaces</h2>
-        <p class="text-xs text-slate-500 mb-6">Evaluating the throughput gain versus WIP penalty across 3 strategic buffer layouts (Total Capacity = 50)[cite: 1].</p>
+        <p class="text-xs text-slate-500 mb-6">Evaluating the throughput gain versus WIP penalty across 3 strategic buffer layouts (Total Capacity = 50).</p>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -459,8 +459,8 @@
               <tr class="bg-slate-50/50">
                 <td class="py-3 px-4 font-semibold text-slate-800">1. Baseline (Uniform)</td>
                 <td class="py-3 px-4 font-mono text-[11px]">5 - 5 - 5 - 5 - 5 - 5 - 5 - 5 - 5</td>
-                <td class="py-3 px-4 font-bold text-slate-900">0.764 pcs/min[cite: 1]</td>
-                <td class="py-3 px-4">22.91 pcs[cite: 1]</td>
+                <td class="py-3 px-4 font-bold text-slate-900">0.764 pcs/min</td>
+                <td class="py-3 px-4">22.91 pcs</td>
                 <td class="py-3 px-4 text-slate-500">Benchmark</td>
                 <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-200 text-slate-700 font-semibold">Baseline</span></td>
               </tr>
@@ -559,7 +559,7 @@
         colorClass: "bg-emerald-100 text-emerald-700",
         html: `
           <p><strong>Definition:</strong> The average rate at which completed workpieces exit the final station (M<sub>10</sub>) of the production system, measured in parts per unit time (workpieces/min).</p>
-          <p><strong>Theoretical Context:</strong> Even though every station has an isolated mean processing speed of &mu; = 1.0, the baseline line achieves only <strong>E[TH] = 0.764</strong>[cite: 1]. This shortfall is the <em>variability penalty</em> caused by stochastic blocking and starvation cascading across coupled machines.</p>
+          <p><strong>Theoretical Context:</strong> Even though every station has an isolated mean processing speed of &mu; = 1.0, the baseline line achieves only <strong>E[TH] = 0.764</strong>. This shortfall is the <em>variability penalty</em> caused by stochastic blocking and starvation cascading across coupled machines.</p>
           <p><strong>Optimization Goal:</strong> Maximizing E[TH] by strategically allocating buffer storage to decouple adjacent machines from momentary fluctuations.</p>
         `
       },
@@ -569,7 +569,7 @@
         colorClass: "bg-sky-100 text-uni-cyan",
         html: `
           <p><strong>Definition:</strong> The expected total number of workpieces physically waiting inside the intermediate decoupling buffers (B<sub>1</sub> through B<sub>9</sub>), excluding parts currently inside machines being processed.</p>
-          <p><strong>Theoretical Context:</strong> In the baseline 45-capacity line, E[WIP<sub>q</sub>] = 22.91[cite: 1]. Higher buffer capacity increases throughput but also increases total inventory.</p>
+          <p><strong>Theoretical Context:</strong> In the baseline 45-capacity line, E[WIP<sub>q</sub>] = 22.91. Higher buffer capacity increases throughput but also increases total inventory.</p>
           <p><strong>Trade-Off:</strong> Work in process ties up working capital, occupies physical floor space, and inflates lead time according to Little's Law.</p>
         `
       },
@@ -582,7 +582,7 @@
           <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
             <i>C</i><sub>total</sub> = <i>C</i><sub>1</sub> + <i>C</i><sub>2</sub> + ... + <i>C</i><sub>9</sub> = &sum; <i>C</i><sub>i</sub>
           </div>
-          <p><strong>Problem 1 Scenario:</strong> The baseline has 45 total slots (5 slots per buffer)[cite: 1]. Question (a) tests how best to allocate <strong>5 additional spaces</strong> (reaching 50 slots total)[cite: 1].</p>
+          <p><strong>Problem 1 Scenario:</strong> The baseline has 45 total slots (5 slots per buffer). Question (a) tests how best to allocate <strong>5 additional spaces</strong> (reaching 50 slots total).</p>
           <p><strong>Key Principle:</strong> Buffer allocation exhibits diminishing marginal returns. The first few slots provide substantial throughput decoupling; subsequent slots mostly accumulate idle inventory.</p>
         `
       },
@@ -596,7 +596,7 @@
           <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
             E[WIP<sub>q</sub>] = E[TH] &times; CT<sub>q</sub> &nbsp;&nbsp;&implies;&nbsp;&nbsp; CT<sub>q</sub> = E[WIP<sub>q</sub>] / E[TH]
           </div>
-          <p><strong>In this Exercise:</strong> At baseline (E[WIP<sub>q</sub>] = 22.91 and E[TH] = 0.764), CT<sub>q</sub> = 22.91 / 0.764 &approx; <strong>29.98 minutes</strong>[cite: 1]. An item spends nearly 30 minutes sitting idle in intermediate storage alone.</p>
+          <p><strong>In this Exercise:</strong> At baseline (E[WIP<sub>q</sub>] = 22.91 and E[TH] = 0.764), CT<sub>q</sub> = 22.91 / 0.764 &approx; <strong>29.98 minutes</strong>. An item spends nearly 30 minutes sitting idle in intermediate storage alone.</p>
         `
       },
       blocking: {
@@ -651,7 +651,7 @@
     const NUM_M = 10;
     let capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
     let simTime = 0, completed = 0;
-    let isRunning = false; // Intentionally paused on initial load
+    let isRunning = false;
     let cumulativeWIP = 0, cumulativeBlocked = 0, cumulativeStarved = 0;
 
     const machines = Array.from({ length: NUM_M }, () => ({
@@ -862,7 +862,7 @@
         ctx.fillStyle = stateColor;
         ctx.fill();
 
-        // Status Label (Padded, No Overflow)
+        // Status Label
         ctx.fillStyle = stateBorder;
         ctx.font = "bold 9px system-ui, sans-serif";
         const label = m.blocked ? "BLOCK" : m.busy ? "WORK" : "STARV";
