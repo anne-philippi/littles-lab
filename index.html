@@ -49,7 +49,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center space-x-3.5">
         <!-- CUSTOM LOGO (CONVEYOR, GEAR & PACKAGE) -->
-        <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-sky-100/30">
+        <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-sky-100/30 shrink-0">
           <svg viewBox="0 0 64 64" fill="none" stroke="#001a3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
             <!-- Gear -->
             <path d="M24 10 L28 10 L29 13 L33 15 L36 13 L39 16 L37 19 L39 23 L42 24 L42 26" />
@@ -247,32 +247,40 @@
           <canvas id="flowCanvas" width="1120" height="200" class="mx-auto block"></canvas>
         </div>
 
-        <!-- Presets -->
-        <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center flex-wrap gap-2">
-            <span class="text-xs font-semibold text-slate-700">Allocation Presets:</span>
-            <button onclick="applyPreset('base')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+        <!-- TWO-ROW MODULAR LAYOUT FOR LEGEND & PRESETS -->
+        <div class="mt-4 pt-3 border-t border-slate-100 space-y-3">
+          
+          <!-- ROW 1: System Status Legend -->
+          <div class="flex items-center justify-between flex-wrap gap-2 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
+            <span class="text-xs font-bold text-uni-navy uppercase tracking-wider">System Status:</span>
+            <div class="flex items-center gap-4 flex-wrap">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Working</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Blocked (Downstream buffer full)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Starved (Upstream buffer empty)</span>
+            </div>
+          </div>
+
+          <!-- ROW 2: Allocation Presets (Dynamic Highlighting) -->
+          <div class="flex items-center flex-wrap gap-2 text-xs">
+            <span class="font-semibold text-slate-700 whitespace-nowrap mr-1">Allocation Presets:</span>
+            <button id="preset-base" onclick="applyPreset('base')" class="preset-btn px-3 py-1.5 rounded-md font-semibold bg-sky-100 text-uni-cyan border border-sky-300 ring-1 ring-sky-300 transition whitespace-nowrap">
               Exercise Baseline (5 each, 45 total)
             </button>
-            <button onclick="applyPreset('center')" class="px-2.5 py-1 rounded text-xs font-semibold bg-sky-50 text-uni-cyan border border-sky-200 hover:bg-sky-100">
-              Center Bowl (+5, rec. 50)
+            <button id="preset-center" onclick="applyPreset('center')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
+              Center Bowl (+5)
             </button>
-            <button onclick="applyPreset('front')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+            <button id="preset-front" onclick="applyPreset('front')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
               Front-Loaded (+5)
             </button>
-            <button onclick="applyPreset('end')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
+            <button id="preset-end" onclick="applyPreset('end')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
               End-Loaded (+5)
             </button>
           </div>
-          <div class="flex items-center gap-4 text-xs font-medium text-slate-600">
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Working</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Blocked (Downstream full)</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Starved (Upstream empty)</span>
-          </div>
+
         </div>
 
         <!-- Buffer Adjusters -->
-        <div class="mt-5 grid grid-cols-3 sm:grid-cols-9 gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+        <div class="mt-4 grid grid-cols-3 sm:grid-cols-9 gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
           <script>
             for (let i = 1; i <= 9; i++) {
               document.write(`
@@ -700,14 +708,27 @@
 
     function updateChartYScale() {
       const maxCap = Math.max(...capacities);
-      // Ensures the chart has breathing room and expands if capacity exceeds 5 or 7
       liveChart.options.scales.y.max = Math.max(6, maxCap + 1);
+    }
+
+    function setPresetHighlight(activeKey) {
+      const presets = ['base', 'center', 'front', 'end'];
+      presets.forEach(key => {
+        const btn = document.getElementById(`preset-${key}`);
+        if (!btn) return;
+        if (key === activeKey) {
+          btn.className = "preset-btn px-3 py-1.5 rounded-md font-semibold bg-sky-100 text-uni-cyan border border-sky-300 ring-1 ring-sky-300 transition whitespace-nowrap";
+        } else {
+          btn.className = "preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap";
+        }
+      });
     }
 
     function adjustBuffer(index, delta) {
       capacities[index] = Math.max(0, Math.min(25, capacities[index] + delta));
       document.getElementById(`buf-val-${index}`).innerText = capacities[index];
       updateTotalCapacityKPI("Custom");
+      setPresetHighlight(null);
       updateChartYScale();
       resetStats();
     }
@@ -726,6 +747,7 @@
         capacities = [5, 5, 5, 5, 5, 5, 6, 7, 7];
         updateTotalCapacityKPI("End-Loaded (+5)");
       }
+      setPresetHighlight(type);
       for (let i = 0; i < 9; i++) {
         document.getElementById(`buf-val-${i}`).innerText = capacities[i];
       }
@@ -976,7 +998,7 @@
         scales: {
           y: { 
             beginAtZero: true, 
-            max: 6, // dynamically updated on buffer changes
+            max: 6,
             grid: { color: "#f1f5f9" },
             ticks: { precision: 0 }
           },
