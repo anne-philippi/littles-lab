@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Little's Lab: Flow Line & Buffer Studio | Anne Philippi</title>
+  <title>Little's Lab | Anne Philippi</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -47,12 +47,38 @@
   <!-- TOP HEADER -->
   <header class="bg-uni-navy text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-lg bg-uni-cyan flex items-center justify-center font-bold text-white shadow">
-          LL
+      <div class="flex items-center space-x-3.5">
+        <!-- CUSTOM LOGO (CONVEYOR, GEAR & PACKAGE) -->
+        <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-sky-100/30">
+          <svg viewBox="0 0 64 64" fill="none" stroke="#001a3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+            <!-- Gear -->
+            <path d="M24 10 L28 10 L29 13 L33 15 L36 13 L39 16 L37 19 L39 23 L42 24 L42 26" />
+            <path d="M18 13 L15 16 L17 19 L15 23 L12 24 L12 28 L15 29 L17 33 L15 36 L18 39 L21 37 L25 39 L26 42 L28 42" />
+            <circle cx="27" cy="26" r="6.5" stroke-dasharray="16 4" />
+            <!-- Motion dashes -->
+            <line x1="12" y1="40" x2="16" y2="40" />
+            <line x1="12" y1="44" x2="20" y2="44" />
+            <!-- Box on Conveyor -->
+            <rect x="27" y="27" width="21" height="19" rx="1.5" fill="#f8fafc" />
+            <path d="M35 27 L35 34 L40 34 L40 27" />
+            <line x1="43" y1="30" x2="48" y2="30" />
+            <line x1="44" y1="34" x2="48" y2="34" />
+            <line x1="35" y1="40" x2="40" y2="40" />
+            <line x1="35" y1="43" x2="38" y2="43" />
+            <!-- Conveyor Belt -->
+            <rect x="10" y="46" width="44" height="11" rx="5.5" fill="#ffffff" />
+            <!-- Rollers -->
+            <circle cx="15.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="21.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="27.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="33.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="39.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="45.5" cy="51.5" r="1.6" fill="#001a3f" />
+            <circle cx="48.5" cy="51.5" r="1.6" fill="#001a3f" />
+          </svg>
         </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight">Little's Lab: Flow Line & Buffer Studio</h1>
+          <h1 class="text-2xl font-black tracking-tight leading-tight">Little's Lab</h1>
           <p class="text-xs text-sky-200">
             Interactive Operations Management Simulator · Universität Mannheim
           </p>
@@ -447,7 +473,6 @@
                 <th class="py-3.5 px-4 whitespace-nowrap">Expected Throughput E[TH]</th>
                 <th class="py-3.5 px-4 whitespace-nowrap">Expected WIP E[WIP<sub>q</sub>]</th>
                 
-                <!-- FORMATTED VERTICAL FRACTION IN HEADER -->
                 <th class="py-3.5 px-4 whitespace-nowrap">
                   <div class="inline-flex items-center gap-1.5">
                     <span>Marginal Efficiency</span>
@@ -555,7 +580,6 @@
         </p>
       </div>
       <div>
-        <!-- LINKEDIN BUTTON WITH INLINE SVG LOGO -->
         <a 
           href="https://www.linkedin.com/in/anne-philippi/" 
           target="_blank" 
