@@ -1,8 +1,6 @@
 # Little's Lab: Flow Line & Buffer Allocation Studio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![University](https://img.shields.io/badge/Universität-Mannheim-001a3f.svg)](https://www.bwl.uni-mannheim.de/en/operations/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Anne%20Philippi-0077b5.svg)](https://www.linkedin.com/in/anne-philippi/)
 
 An interactive web simulator and visual dashboard modeling a 10-machine serial flow line with intermediate decoupling buffers, designed around **Exercise Session 3: Problem 1 (Design and Management of Flow Lines)** at **Universität Mannheim**.
 
