@@ -64,7 +64,7 @@
           href="https://www.linkedin.com/in/anne-philippi/" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white text-uni-navy hover:bg-sky-50 transition border border-sky-100 shadow-sm"
+          class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white text-uni-navy hover:bg-sky-50 transition border border-sky-100 shadow-sm"
         >
           <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5 text-uni-cyan"></i>
           Anne Philippi
@@ -110,7 +110,7 @@
           </div>
           <div>
             <div id="kpi-th" class="text-xl font-bold text-emerald-600">0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong></div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong>[cite: 1]</div>
           </div>
         </div>
 
@@ -127,7 +127,7 @@
           </div>
           <div>
             <div id="kpi-wip" class="text-xl font-bold text-uni-cyan">0.00 <span class="text-xs font-normal text-slate-500">workpieces</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong></div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong>[cite: 1]</div>
           </div>
         </div>
 
@@ -206,11 +206,12 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
           <div>
             <h3 class="text-base font-bold text-uni-navy">10-Machine Serial Flow Line (BAS)</h3>
-            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub></p>
+            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub>[cite: 1]</p>
           </div>
           <div class="flex items-center flex-wrap gap-2">
-            <button id="btnPlay" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-uni-cyan text-white hover:bg-sky-600 transition flex items-center gap-1">
-              <i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause
+            <!-- PLAY/PAUSE STARTS IN PAUSED STATE -->
+            <button id="btnPlay" class="px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Simulation
             </button>
             <button id="btnReset" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
@@ -231,10 +232,10 @@
           <div class="flex items-center flex-wrap gap-2">
             <span class="text-xs font-semibold text-slate-700">Allocation Presets:</span>
             <button onclick="applyPreset('base')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
-              Exercise Baseline (5 each, 45 total)
+              Exercise Baseline (5 each, 45 total)[cite: 1]
             </button>
             <button onclick="applyPreset('center')" class="px-2.5 py-1 rounded text-xs font-semibold bg-sky-50 text-uni-cyan border border-sky-200 hover:bg-sky-100">
-              Center Bowl (+5, rec. 50)
+              Center Bowl (+5, rec. 50)[cite: 1]
             </button>
             <button onclick="applyPreset('front')" class="px-2.5 py-1 rounded text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200">
               Front-Loaded (+5)
@@ -301,7 +302,7 @@
         </div>
 
         <p class="text-sm text-slate-700 leading-relaxed">
-          "A company operates a flow production line with 10 machines. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute. Currently, a total buffer capacity of 45 is installed. The buffer capacity is equally spread out over the line. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = 22.91</strong>. The distribution of the WIP is depicted in the graph below."[cite: 1]
+          "A company operates a flow production line with 10 machines[cite: 1]. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute[cite: 1]. Currently, a total buffer capacity of 45 is installed[cite: 1]. The buffer capacity is equally spread out over the line[cite: 1]. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = 22.91</strong>[cite: 1]. The distribution of the WIP is depicted in the graph below[cite: 1]."
         </p>
       </div>
 
@@ -332,10 +333,10 @@
                 Notice how buffer inventory descends monotonically from <strong>B<sub>1</sub> (3.48)</strong> down to <strong>B<sub>9</sub> (1.59)</strong> despite equal service rates (&mu; = 1.0) and equal capacities (<i>C</i> = 5)[cite: 1, 3].
               </p>
               <p>
-                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers.
+                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers[cite: 1].
               </p>
               <p>
-                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously.
+                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously[cite: 1].
               </p>
             </div>
           </div>
@@ -357,11 +358,11 @@
           </p>
           <div class="text-xs text-slate-700 space-y-2 leading-relaxed">
             <p>
-              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers B<sub>4</sub>, B<sub>5</sub>, and B<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4).
+              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers B<sub>4</sub>, B<sub>5</sub>, and B<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4)[cite: 1].
             </p>
             <p>
               <strong>Theoretical Rationale (The Bowl Phenomenon):</strong>
-              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back).
+              Starvation waves propagate downstream while blocking waves propagate upstream[cite: 1]. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back)[cite: 1].
             </p>
           </div>
         </div>
@@ -389,7 +390,7 @@
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-2">Strategy Comparison: Allocating +5 Buffer Spaces</h2>
-        <p class="text-xs text-slate-500 mb-6">Evaluating the throughput gain versus WIP penalty across 3 strategic buffer layouts (Total Capacity = 50).</p>
+        <p class="text-xs text-slate-500 mb-6">Evaluating the throughput gain versus WIP penalty across 3 strategic buffer layouts (Total Capacity = 50)[cite: 1].</p>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -480,15 +481,17 @@
         </p>
       </div>
       <div>
-        <!-- LINKEDIN BUTTON WITH OFFICIAL LINKEDIN ICON (FOOTER) -->
+        <!-- LINKEDIN BUTTON WITH INLINE SVG LOGO -->
         <a 
           href="https://www.linkedin.com/in/anne-philippi/" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#0077b5] text-white hover:bg-[#005f93] transition shadow-sm"
+          class="inline-flex items-center justify-center px-4 py-2 rounded-md text-xs font-semibold bg-[#0077b5] text-white hover:bg-[#005f93] transition shadow-sm gap-2"
         >
-          <i data-lucide="linkedin" class="w-3.5 h-3.5 mr-1.5 text-white"></i>
-          Connect on LinkedIn
+          <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+          </svg>
+          <span>Connect on LinkedIn</span>
         </a>
       </div>
     </div>
@@ -593,10 +596,11 @@
       if (e.key === "Escape") closeModal();
     });
 
-    // SIMULATION ENGINE
+    // SIMULATION ENGINE STATE (STARTS PAUSED)
     const NUM_M = 10;
-    let capacities = Array(NUM_M - 1).fill(5);
-    let simTime = 0, completed = 0, isRunning = true;
+    let capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
+    let simTime = 0, completed = 0;
+    let isRunning = false; // Intentionally false on load so visitors aren't rushed
     let cumulativeWIP = 0, cumulativeBlocked = 0, cumulativeStarved = 0;
 
     const machines = Array.from({ length: NUM_M }, () => ({
@@ -646,6 +650,18 @@
       buffers.fill(0);
       bufferSums.fill(0);
       machines.forEach(m => { m.busy = false; m.blocked = false; m.timeLeft = 0; });
+
+      document.getElementById("kpi-th").innerHTML = `0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
+      document.getElementById("kpi-wip").innerHTML = `0.00 <span class="text-xs font-normal text-slate-500">workpieces</span>`;
+      document.getElementById("kpi-ctq").innerHTML = `0.00 <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-blocking").innerText = `0.0%`;
+      document.getElementById("kpi-starvation").innerText = `0.0%`;
+
+      for (let i = 0; i < 9; i++) {
+        liveChart.data.datasets[0].data[i] = 0;
+      }
+      liveChart.data.datasets[1].data = capacities;
+      liveChart.update('none');
     }
 
     function simStep(dt) {
@@ -955,16 +971,23 @@
       document.getElementById(`tab-btn-${tabId}`).className = 'tab-active py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5';
     }
 
-    // HANDLERS
+    // PLAY/PAUSE BUTTON HANDLER
     document.getElementById("btnPlay").onclick = (e) => {
       isRunning = !isRunning;
-      e.target.innerHTML = isRunning 
-        ? `<i data-lucide="pause" class="w-3.5 h-3.5 inline mr-1"></i> Pause` 
-        : `<i data-lucide="play" class="w-3.5 h-3.5 inline mr-1"></i> Resume`;
+      const btn = document.getElementById("btnPlay");
+      if (isRunning) {
+        btn.className = "px-4 py-1.5 rounded-md text-xs font-semibold bg-uni-cyan hover:bg-sky-600 text-white transition flex items-center gap-1.5 shadow-sm";
+        btn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause`;
+      } else {
+        btn.className = "px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm";
+        btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5"></i> Resume`;
+      }
       lucide.createIcons();
     };
     document.getElementById("btnReset").onclick = resetStats;
 
+    // INITIAL STATIC DRAW
+    drawFloor();
     requestAnimationFrame(loop);
   </script>
 </body>
