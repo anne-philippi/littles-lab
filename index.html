@@ -59,7 +59,6 @@
         </div>
       </div>
       <div class="flex items-center space-x-3">
-        <!-- USER PROFILE BUTTON (TOP HEADER) -->
         <a 
           href="https://www.linkedin.com/in/anne-philippi/" 
           target="_blank" 
@@ -209,22 +208,18 @@
             <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub></p>
           </div>
           <div class="flex items-center flex-wrap gap-2">
-            <!-- PLAY/PAUSE -->
             <button id="btnPlay" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Simulation
             </button>
             
-            <!-- FAST FORWARD TO STEADY STATE BUTTON -->
             <button id="btnFastForward" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white transition flex items-center gap-1.5 shadow-sm" title="Skip warm-up period directly to long-run steady state">
               <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Steady State
             </button>
 
-            <!-- RESET -->
             <button id="btnReset" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
             </button>
 
-            <!-- SPEED SLIDER WITH DYNAMIC MULTIPLIER LABEL -->
             <div class="flex items-center gap-2 ml-2 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200 text-xs font-medium text-slate-600">
               <span>Speed:</span>
               <input type="range" id="speedRange" min="1" max="50" value="10" class="w-20 accent-sky-600">
@@ -437,7 +432,7 @@
 
     </div>
 
-    <!-- TAB 3: STRATEGY DELTA COMPARISON -->
+    <!-- TAB 3: STRATEGY DELTA COMPARISON (FORMATTED TABLE) -->
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-2">Strategy Comparison: Allocating +5 Buffer Spaces</h2>
@@ -446,47 +441,75 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-semibold">
-                <th class="py-3 px-4">Strategy</th>
-                <th class="py-3 px-4">Buffer Distribution (B<sub>1</sub> to B<sub>9</sub>)</th>
-                <th class="py-3 px-4">Expected Throughput E[TH]</th>
-                <th class="py-3 px-4">Expected WIP E[WIP<sub>q</sub>]</th>
-                <th class="py-3 px-4">Marginal Efficiency (&Delta;TH / &Delta;WIP)</th>
-                <th class="py-3 px-4">Evaluation</th>
+              <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-semibold align-middle">
+                <th class="py-3.5 px-4 whitespace-nowrap">Strategy</th>
+                <th class="py-3.5 px-4 whitespace-nowrap">Buffer Distribution (B<sub>1</sub> to B<sub>9</sub>)</th>
+                <th class="py-3.5 px-4 whitespace-nowrap">Expected Throughput E[TH]</th>
+                <th class="py-3.5 px-4 whitespace-nowrap">Expected WIP E[WIP<sub>q</sub>]</th>
+                
+                <!-- FORMATTED VERTICAL FRACTION IN HEADER -->
+                <th class="py-3.5 px-4 whitespace-nowrap">
+                  <div class="inline-flex items-center gap-1.5">
+                    <span>Marginal Efficiency</span>
+                    <span class="inline-flex flex-col items-center justify-center text-[10px] leading-tight font-normal text-slate-700 bg-white border border-slate-300 rounded px-1.5 py-0.5 shadow-2xs">
+                      <span>&Delta;E[TH]</span>
+                      <span class="w-full border-t border-slate-400"></span>
+                      <span>&Delta;E[WIP<sub>q</sub>]</span>
+                    </span>
+                  </div>
+                </th>
+
+                <th class="py-3.5 px-4 whitespace-nowrap">Evaluation</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700">
               <tr class="bg-slate-50/50">
-                <td class="py-3 px-4 font-semibold text-slate-800">1. Baseline (Uniform)</td>
-                <td class="py-3 px-4 font-mono text-[11px]">5 - 5 - 5 - 5 - 5 - 5 - 5 - 5 - 5</td>
-                <td class="py-3 px-4 font-bold text-slate-900">0.764 pcs/min</td>
-                <td class="py-3 px-4">22.91 pcs</td>
-                <td class="py-3 px-4 text-slate-500">Benchmark</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-200 text-slate-700 font-semibold">Baseline</span></td>
+                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">1. Baseline (Uniform)</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">5 - 5 - 5 - 5 - 5 - 5 - 5 - 5 - 5</td>
+                <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">0.764 pcs/min</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">22.91 pcs</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">Benchmark</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-slate-200 text-slate-700 font-semibold whitespace-nowrap">
+                    Baseline
+                  </span>
+                </td>
               </tr>
               <tr class="bg-sky-50/70 border-l-4 border-l-uni-cyan">
-                <td class="py-3 px-4 font-semibold text-uni-navy">2. Center-Loaded (The Bowl)</td>
-                <td class="py-3 px-4 font-mono text-[11px] text-uni-cyan font-bold">5 - 5 - 6 - 7 - 7 - 6 - 5 - 5 - 4</td>
-                <td class="py-3 px-4 font-bold text-emerald-600">~ 0.779 pcs/min (+1.96%)</td>
-                <td class="py-3 px-4 font-medium">~ 25.10 pcs (+9.5%)</td>
-                <td class="py-3 px-4 font-bold text-emerald-700">0.0068 (Highest)</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-semibold">Optimal Choice</span></td>
+                <td class="py-3.5 px-4 font-semibold text-uni-navy whitespace-nowrap">2. Center-Loaded (The Bowl)</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] text-uni-cyan font-bold whitespace-nowrap">5 - 5 - 6 - 7 - 7 - 6 - 5 - 5 - 4</td>
+                <td class="py-3.5 px-4 font-bold text-emerald-600 whitespace-nowrap">~ 0.779 pcs/min (+1.96%)</td>
+                <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 25.10 pcs (+9.5%)</td>
+                <td class="py-3.5 px-4 font-bold text-emerald-700 whitespace-nowrap">0.0068 (Highest)</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-emerald-100 text-emerald-800 font-semibold whitespace-nowrap">
+                    Optimal Choice
+                  </span>
+                </td>
               </tr>
               <tr>
-                <td class="py-3 px-4 font-semibold text-slate-800">3. Front-Loaded</td>
-                <td class="py-3 px-4 font-mono text-[11px]">7 - 7 - 6 - 5 - 5 - 5 - 5 - 5 - 5</td>
-                <td class="py-3 px-4 text-slate-700">~ 0.771 pcs/min (+0.91%)</td>
-                <td class="py-3 px-4 text-rose-600 font-medium">~ 26.80 pcs (+16.9%)</td>
-                <td class="py-3 px-4 text-slate-500">0.0018 (Poor)</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-rose-100 text-rose-800 font-semibold">Excess WIP Trap</span></td>
+                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">3. Front-Loaded</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">7 - 7 - 6 - 5 - 5 - 5 - 5 - 5 - 5</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.771 pcs/min (+0.91%)</td>
+                <td class="py-3.5 px-4 text-rose-600 font-medium whitespace-nowrap">~ 26.80 pcs (+16.9%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0018 (Poor)</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-rose-100 text-rose-800 font-semibold whitespace-nowrap">
+                    Excess WIP Trap
+                  </span>
+                </td>
               </tr>
               <tr>
-                <td class="py-3 px-4 font-semibold text-slate-800">4. End-Loaded</td>
-                <td class="py-3 px-4 font-mono text-[11px]">5 - 5 - 5 - 5 - 5 - 5 - 6 - 7 - 7</td>
-                <td class="py-3 px-4 text-slate-700">~ 0.772 pcs/min (+1.04%)</td>
-                <td class="py-3 px-4 font-medium">~ 23.90 pcs (+4.3%)</td>
-                <td class="py-3 px-4 text-slate-500">0.0081 (Starved)</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 font-semibold">Underutilized</span></td>
+                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">4. End-Loaded</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">5 - 5 - 5 - 5 - 5 - 5 - 6 - 7 - 7</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.772 pcs/min (+1.04%)</td>
+                <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 23.90 pcs (+4.3%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0081 (Starved)</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">
+                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-amber-100 text-amber-800 font-semibold whitespace-nowrap">
+                    Underutilized
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -718,7 +741,6 @@
     function simStep(dt) {
       simTime += dt;
 
-      // 1. Process active machines
       for (let i = 0; i < NUM_M; i++) {
         const m = machines[i];
         if (m.busy && !m.blocked) {
@@ -736,7 +758,6 @@
         }
       }
 
-      // 2. Unblock stalled machines
       for (let i = NUM_M - 2; i >= 0; i--) {
         if (machines[i].blocked && buffers[i] < capacities[i]) {
           buffers[i]++;
@@ -744,7 +765,6 @@
         }
       }
 
-      // 3. Feed idle machines
       let starvedCount = 0, blockedCount = 0;
       for (let i = 0; i < NUM_M; i++) {
         const m = machines[i];
@@ -773,7 +793,6 @@
       }
     }
 
-    // FAST FORWARD TO STEADY STATE ENGINE
     function fastForwardToSteadyState() {
       const steps = 15000;
       const stepSize = 0.05;
@@ -801,7 +820,6 @@
       drawFloor();
     }
 
-    // CANVAS DRAWING (CLEAN INDUSTRIAL ALIGNMENT)
     const canvas = document.getElementById("flowCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -815,7 +833,6 @@
       const bHeight = 44;
       const startX = 30;
 
-      // 1. Unified Conveyor Track Line
       ctx.fillStyle = "#1e293b";
       ctx.fillRect(startX - 10, centerY - 6, (NUM_M * mWidth) + ((NUM_M - 1) * bWidth) + 20, 12);
       ctx.strokeStyle = "#334155";
@@ -827,13 +844,11 @@
         const my = centerY - mHeight / 2;
         const m = machines[i];
 
-        // 2. Machine Outer Shadow
         ctx.fillStyle = "#090d16";
         ctx.beginPath();
         ctx.roundRect(mx + 2, my + 3, mWidth, mHeight, 8);
         ctx.fill();
 
-        // Machine Main Station
         const stateColor = m.blocked ? "#ef4444" : m.busy ? "#10b981" : "#f59e0b";
         const stateBorder = m.blocked ? "#f87171" : m.busy ? "#34d399" : "#fbbf24";
 
@@ -845,7 +860,6 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Machine Header Box
         ctx.fillStyle = stateColor;
         ctx.beginPath();
         ctx.roundRect(mx + 6, my + 6, mWidth - 12, 18, 4);
@@ -856,26 +870,22 @@
         ctx.textAlign = "center";
         ctx.fillText(`M${i + 1}`, mx + mWidth / 2, my + 19);
 
-        // Center Status Indicator Dot
         ctx.beginPath();
         ctx.arc(mx + mWidth / 2, my + 38, 4, 0, Math.PI * 2);
         ctx.fillStyle = stateColor;
         ctx.fill();
 
-        // Status Label
         ctx.fillStyle = stateBorder;
         ctx.font = "bold 9px system-ui, sans-serif";
         const label = m.blocked ? "BLOCK" : m.busy ? "WORK" : "STARV";
         ctx.fillText(label, mx + mWidth / 2, my + 58);
 
-        // 3. Buffer Rack Rendering
         if (i < NUM_M - 1) {
           const bx = mx + mWidth;
           const by = centerY - bHeight / 2;
           const cap = capacities[i];
           const curr = buffers[i];
 
-          // Buffer Enclosure
           ctx.fillStyle = "#0b1222";
           ctx.beginPath();
           ctx.roundRect(bx + 4, by, bWidth - 8, bHeight, 5);
@@ -884,7 +894,6 @@
           ctx.lineWidth = 1;
           ctx.stroke();
 
-          // Buffer Fill Meter
           const fillRatio = cap > 0 ? (curr / cap) : 0;
           const maxFillWidth = bWidth - 12;
           const fillWidth = fillRatio * maxFillWidth;
@@ -896,13 +905,11 @@
             ctx.fill();
           }
 
-          // Buffer Header
           ctx.fillStyle = "#94a3b8";
           ctx.font = "bold 10px system-ui, sans-serif";
           ctx.textAlign = "center";
           ctx.fillText(`B${i + 1}`, bx + bWidth / 2, by + 13);
 
-          // Buffer Capacity Counter
           ctx.fillStyle = fillRatio >= 1 ? "#f87171" : "#38bdf8";
           ctx.font = "9px monospace";
           ctx.fillText(`${curr}/${cap}`, bx + bWidth / 2, by + 39);
@@ -912,7 +919,6 @@
       ctx.textAlign = "left";
     }
 
-    // LIVE CHART
     const ctxLive = document.getElementById("liveChart").getContext("2d");
     const liveChart = new Chart(ctxLive, {
       type: "bar",
@@ -950,7 +956,6 @@
       }
     });
 
-    // BENCHMARK CASE CHART
     const ctxBench = document.getElementById("benchmarkChart").getContext("2d");
     const benchData = [3.48, 3.11, 2.89, 2.70, 2.55, 2.39, 2.21, 1.97, 1.59];
     new Chart(ctxBench, {
@@ -995,7 +1000,6 @@
       }
     });
 
-    // RUNTIME LOOP
     let lastTime = performance.now();
     let chartTimer = 0;
 
@@ -1040,7 +1044,6 @@
       requestAnimationFrame(loop);
     }
 
-    // TABS
     function switchTab(tabId) {
       ['sim', 'exercise', 'delta'].forEach(t => {
         document.getElementById(`tab-${t}`).classList.add('hidden');
@@ -1050,7 +1053,6 @@
       document.getElementById(`tab-btn-${tabId}`).className = 'tab-active py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5';
     }
 
-    // PLAY/PAUSE
     document.getElementById("btnPlay").onclick = () => {
       isRunning = !isRunning;
       const btn = document.getElementById("btnPlay");
@@ -1064,18 +1066,13 @@
       lucide.createIcons();
     };
 
-    // FAST FORWARD BUTTON HANDLER
     document.getElementById("btnFastForward").onclick = fastForwardToSteadyState;
-
-    // RESET BUTTON
     document.getElementById("btnReset").onclick = resetStats;
 
-    // SPEED SLIDER EVENT LISTENER
     document.getElementById("speedRange").oninput = (e) => {
       document.getElementById("speedDisplay").innerText = `${e.target.value}x`;
     };
 
-    // INITIAL STATIC RENDER
     drawFloor();
     requestAnimationFrame(loop);
   </script>
