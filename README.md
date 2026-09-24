@@ -40,7 +40,6 @@ Live Demo: [littles-lab.vercel.app](https://littles-lab.vercel.app/)
 * **Course Benchmark Reference**: Direct reference reproduction of Exercise Session 3 (Problem 1) including analytical proofs, distribution graphs, and rules of thumb (MTTF, MTTR, bottleneck isolation).
 * **Strategy Comparison Table**: Multi-scenario evaluation showing marginal decoupling efficiency:
   $$\frac{\Delta E[TH]}{\Delta E[WIP_q]}$$
-* **Mannheim Branding**: Schloss Navy (`#001A3F`) and Academic Cyan (`#008AC9`) design hierarchy.
 * **Zero Dependencies**: Pure, standalone vanilla HTML5/JavaScript, Tailwind CSS (CDN), Chart.js, and Lucide icons.
 
 ---
