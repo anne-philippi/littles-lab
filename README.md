@@ -1,4 +1,4 @@
-# Little's Lab: Flow Line & Buffer Studio
+# Little's Lab
 
 An interactive discrete-event simulator and pedagogical decision-support tool designed for Operations Management coursework at the **University of Mannheim**.
 
