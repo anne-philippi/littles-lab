@@ -209,16 +209,26 @@
             <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks B<sub>1</sub> through B<sub>9</sub>[cite: 1]</p>
           </div>
           <div class="flex items-center flex-wrap gap-2">
-            <!-- PLAY/PAUSE STARTS IN PAUSED STATE -->
-            <button id="btnPlay" class="px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm">
+            <!-- PLAY/PAUSE -->
+            <button id="btnPlay" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Simulation
             </button>
-            <button id="btnReset" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
+            
+            <!-- FAST FORWARD TO STEADY STATE BUTTON -->
+            <button id="btnFastForward" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white transition flex items-center gap-1.5 shadow-sm" title="Skip warm-up period directly to long-run steady state">
+              <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Steady State
+            </button>
+
+            <!-- RESET -->
+            <button id="btnReset" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
             </button>
-            <div class="flex items-center gap-1.5 ml-2 text-xs font-medium text-slate-600">
+
+            <!-- SPEED SLIDER WITH DYNAMIC MULTIPLIER LABEL -->
+            <div class="flex items-center gap-2 ml-2 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200 text-xs font-medium text-slate-600">
               <span>Speed:</span>
-              <input type="range" id="speedRange" min="1" max="50" value="12" class="w-24 accent-sky-600">
+              <input type="range" id="speedRange" min="1" max="50" value="10" class="w-20 accent-sky-600">
+              <span id="speedDisplay" class="font-bold text-uni-cyan w-8">10x</span>
             </div>
           </div>
         </div>
@@ -600,7 +610,7 @@
     const NUM_M = 10;
     let capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
     let simTime = 0, completed = 0;
-    let isRunning = false; // Intentionally false on load so visitors aren't rushed
+    let isRunning = false; // Intentionally paused on initial load
     let cumulativeWIP = 0, cumulativeBlocked = 0, cumulativeStarved = 0;
 
     const machines = Array.from({ length: NUM_M }, () => ({
@@ -720,6 +730,36 @@
       for (let i = 0; i < 9; i++) {
         bufferSums[i] += buffers[i] * dt;
       }
+    }
+
+    // FAST FORWARD TO STEADY STATE ENGINE
+    function fastForwardToSteadyState() {
+      // Run 15,000 sub-steps instantaneously without animation lag
+      const steps = 15000;
+      const stepSize = 0.05;
+      for (let s = 0; s < steps; s++) {
+        simStep(stepSize);
+      }
+      
+      // Update Telemetry Immediately
+      const currentTH = (completed / simTime);
+      const currentWIP = (cumulativeWIP / simTime);
+      const ctq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+      const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
+      const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
+
+      document.getElementById("kpi-th").innerHTML = `${currentTH.toFixed(3)} <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
+      document.getElementById("kpi-wip").innerHTML = `${currentWIP.toFixed(2)} <span class="text-xs font-normal text-slate-500">workpieces</span>`;
+      document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
+      document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
+
+      for (let i = 0; i < 9; i++) {
+        liveChart.data.datasets[0].data[i] = (bufferSums[i] / simTime).toFixed(2);
+      }
+      liveChart.data.datasets[1].data = capacities;
+      liveChart.update();
+      drawFloor();
     }
 
     // CANVAS DRAWING (CLEAN INDUSTRIAL ALIGNMENT)
@@ -971,22 +1011,32 @@
       document.getElementById(`tab-btn-${tabId}`).className = 'tab-active py-3.5 px-4 text-sm whitespace-nowrap transition flex items-center gap-1.5';
     }
 
-    // PLAY/PAUSE BUTTON HANDLER
-    document.getElementById("btnPlay").onclick = (e) => {
+    // PLAY/PAUSE
+    document.getElementById("btnPlay").onclick = () => {
       isRunning = !isRunning;
       const btn = document.getElementById("btnPlay");
       if (isRunning) {
-        btn.className = "px-4 py-1.5 rounded-md text-xs font-semibold bg-uni-cyan hover:bg-sky-600 text-white transition flex items-center gap-1.5 shadow-sm";
+        btn.className = "px-3.5 py-1.5 rounded-md text-xs font-semibold bg-uni-cyan hover:bg-sky-600 text-white transition flex items-center gap-1.5 shadow-sm";
         btn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause`;
       } else {
-        btn.className = "px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm";
+        btn.className = "px-3.5 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm";
         btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5"></i> Resume`;
       }
       lucide.createIcons();
     };
+
+    // FAST FORWARD BUTTON HANDLER
+    document.getElementById("btnFastForward").onclick = fastForwardToSteadyState;
+
+    // RESET BUTTON
     document.getElementById("btnReset").onclick = resetStats;
 
-    // INITIAL STATIC DRAW
+    // SPEED SLIDER EVENT LISTENER
+    document.getElementById("speedRange").oninput = (e) => {
+      document.getElementById("speedDisplay").innerText = `${e.target.value}x`;
+    };
+
+    // INITIAL STATIC RENDER
     drawFloor();
     requestAnimationFrame(loop);
   </script>
