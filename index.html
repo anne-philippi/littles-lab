@@ -46,7 +46,7 @@
 
   <!-- TOP HEADER -->
   <header class="bg-uni-navy text-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center space-x-3.5">
         <!-- CUSTOM LOGO (CONVEYOR, GEAR & PACKAGE) -->
         <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-sky-100/30">
@@ -83,17 +83,6 @@
             Interactive Operations Management Simulator
           </p>
         </div>
-      </div>
-      <div class="flex items-center space-x-3">
-        <a 
-          href="https://www.linkedin.com/in/anne-philippi/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-md text-xs font-semibold bg-white text-uni-navy hover:bg-sky-50 transition border border-sky-100 shadow-sm"
-        >
-          <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5 text-uni-cyan"></i>
-          Anne Philippi
-        </a>
       </div>
     </div>
   </header>
@@ -301,7 +290,7 @@
         </div>
       </div>
 
-      <!-- LIVE TELEMETRY BAR CHART -->
+      <!-- LIVE TELEMETRY BAR CHART (DYNAMIC Y-AXIS) -->
       <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
         <div class="flex items-center justify-between mb-4">
           <div>
@@ -709,10 +698,17 @@
 
     function expRand(rate = 1.0) { return -Math.log(1 - Math.random()) / rate; }
 
+    function updateChartYScale() {
+      const maxCap = Math.max(...capacities);
+      // Ensures the chart has breathing room and expands if capacity exceeds 5 or 7
+      liveChart.options.scales.y.max = Math.max(6, maxCap + 1);
+    }
+
     function adjustBuffer(index, delta) {
-      capacities[index] = Math.max(0, Math.min(15, capacities[index] + delta));
+      capacities[index] = Math.max(0, Math.min(25, capacities[index] + delta));
       document.getElementById(`buf-val-${index}`).innerText = capacities[index];
       updateTotalCapacityKPI("Custom");
+      updateChartYScale();
       resetStats();
     }
 
@@ -733,6 +729,7 @@
       for (let i = 0; i < 9; i++) {
         document.getElementById(`buf-val-${i}`).innerText = capacities[i];
       }
+      updateChartYScale();
       resetStats();
     }
 
@@ -759,6 +756,7 @@
         liveChart.data.datasets[0].data[i] = 0;
       }
       liveChart.data.datasets[1].data = capacities;
+      updateChartYScale();
       liveChart.update('none');
     }
 
@@ -840,6 +838,7 @@
         liveChart.data.datasets[0].data[i] = (bufferSums[i] / simTime).toFixed(2);
       }
       liveChart.data.datasets[1].data = capacities;
+      updateChartYScale();
       liveChart.update();
       drawFloor();
     }
@@ -943,6 +942,7 @@
       ctx.textAlign = "left";
     }
 
+    // LIVE CHART (WITH DYNAMIC Y SCALING)
     const ctxLive = document.getElementById("liveChart").getContext("2d");
     const liveChart = new Chart(ctxLive, {
       type: "bar",
@@ -974,7 +974,12 @@
           legend: { position: "top", labels: { boxWidth: 12, font: { size: 11 } } }
         },
         scales: {
-          y: { beginAtZero: true, max: 7, grid: { color: "#f1f5f9" } },
+          y: { 
+            beginAtZero: true, 
+            max: 6, // dynamically updated on buffer changes
+            grid: { color: "#f1f5f9" },
+            ticks: { precision: 0 }
+          },
           x: { grid: { display: false } }
         }
       }
@@ -1061,6 +1066,7 @@
             liveChart.data.datasets[0].data[i] = (bufferSums[i] / simTime).toFixed(2);
           }
           liveChart.data.datasets[1].data = capacities;
+          updateChartYScale();
           liveChart.update('none');
         }
       }
@@ -1097,6 +1103,7 @@
       document.getElementById("speedDisplay").innerText = `${e.target.value}x`;
     };
 
+    updateChartYScale();
     drawFloor();
     requestAnimationFrame(loop);
   </script>
