@@ -162,11 +162,11 @@
           </div>
         </div>
 
-        <!-- Queue Waiting Time -->
+        <!-- Total Cycle Time E[CT] = E[W_s] -->
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
             <span class="flex items-center gap-1">
-              Queue Time E[W<sub>q</sub>]
+              Cycle Time E[CT]
               <button onclick="openModal('ctq')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
                 <i data-lucide="info" class="w-3.5 h-3.5"></i>
               </button>
@@ -174,8 +174,8 @@
             <i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
           </div>
           <div>
-            <div id="kpi-ctq" class="text-xl font-bold text-amber-600">0.00 <span class="text-xs font-normal text-slate-500">min</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Little's Law: <strong>E[L<sub>q</sub>] / E[TH]</strong></div>
+            <div id="kpi-ctq" class="text-xl font-bold text-amber-600">10.00 <span class="text-xs font-normal text-slate-500">min</span></div>
+            <div id="kpi-ctq-sub" class="text-[11px] text-slate-500 mt-1 truncate">E[W<sub>q</sub>] 0.00 + 10.0 min raw</div>
           </div>
         </div>
 
@@ -240,10 +240,11 @@
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
             </button>
 
+            <!-- SPEED SLIDER WITH DYNAMIC MULTIPLIER AND SIM-MIN/SEC LABEL -->
             <div class="flex items-center gap-2 ml-2 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200 text-xs font-medium text-slate-600">
               <span>Speed:</span>
               <input type="range" id="speedRange" min="1" max="50" value="10" class="w-20 accent-sky-600">
-              <span id="speedDisplay" class="font-bold text-uni-cyan w-8">10x</span>
+              <span id="speedDisplay" class="font-bold text-uni-cyan whitespace-nowrap">10x (~6.0 sim-min/s)</span>
             </div>
           </div>
         </div>
@@ -265,20 +266,20 @@
             </div>
           </div>
 
-          <!-- ROW 2: Allocation Presets -->
+          <!-- ROW 2: Allocation Presets (Extreme Cases from Exercise) -->
           <div class="flex items-center flex-wrap gap-2 text-xs">
             <span class="font-semibold text-slate-700 whitespace-nowrap mr-1">Allocation Presets:</span>
             <button id="preset-base" onclick="applyPreset('base')" class="preset-btn px-3 py-1.5 rounded-md font-semibold bg-sky-100 text-uni-cyan border border-sky-300 ring-1 ring-sky-300 transition whitespace-nowrap">
-              Exercise Baseline (5 each, 45 total)
+              Baseline (5 each, 45 total)
             </button>
-            <button id="preset-center" onclick="applyPreset('center')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
-              Center Bowl (+5)
+            <button id="preset-center" onclick="applyPreset('center')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap" title="(5,5,6,6,6,6,6,5,5) - Highest E[TH]">
+              Center Bowl (+5, Max TH)
             </button>
-            <button id="preset-front" onclick="applyPreset('front')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
-              Front-Loaded (+5)
+            <button id="preset-front" onclick="applyPreset('front')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap" title="(8,7,5,5,5,5,5,5,5) - Extreme Front-Loaded (Highest WIP)">
+              Front-Loaded (+5, Max WIP)
             </button>
-            <button id="preset-end" onclick="applyPreset('end')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
-              End-Loaded (+5)
+            <button id="preset-end" onclick="applyPreset('end')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap" title="(5,5,5,5,5,5,5,7,8) - Extreme End-Loaded (Lowest WIP)">
+              End-Loaded (+5, Min WIP)
             </button>
           </div>
 
@@ -391,11 +392,11 @@
           </p>
           <div class="text-xs text-slate-700 space-y-2 leading-relaxed">
             <p>
-              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers b<sub>4</sub>, b<sub>5</sub>, and b<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4).
+              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (e.g., capacities 5-5-6-6-6-6-6-5-5), forming a symmetric <em>bowl-shaped distribution</em> that yields the maximum throughput increase.
             </p>
             <p>
               <strong>Theoretical Rationale (The Bowl Phenomenon):</strong>
-              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back).
+              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (extreme WIP at the front, persistent starvation at the back).
             </p>
           </div>
         </div>
@@ -410,9 +411,9 @@
           </p>
           <ul class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed">
             <li><strong>The Bowl Shape:</strong> For balanced flow lines with identical stations, buffers should be allocated symmetrically, with maximum capacity in the center.</li>
-            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking).</li>
-            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers.</li>
-            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain.</li>
+            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking)[cite: 11].</li>
+            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers[cite: 11].</li>
+            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain[cite: 11].</li>
           </ul>
         </div>
       </div>
@@ -461,7 +462,7 @@
               Variability & Classes
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV). In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR.
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV)[cite: 11]. In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR[cite: 11].
             </p>
           </div>
         </div>
@@ -469,12 +470,12 @@
 
     </div>
 
-    <!-- TAB 3: STRATEGY DELTA COMPARISON -->
+    <!-- TAB 3: STRATEGY DELTA COMPARISON (UPDATED EXTREME CASES) -->
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
-        <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Dual Optimization Problem</h2>
+        <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Extreme Buffer Allocations (+5 Spaces)</h2>
         <p class="text-xs text-slate-500 mb-6">
-          Maximizing expected throughput E[TH(b)] subject to total buffer capacity constraint &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup> = 50.
+          Benchmarking the extreme cases of allocating 5 additional buffer spaces ($b_{\text{tot}} = 50$) to evaluate the trade-off between throughput maximization and inventory inflation.
         </p>
 
         <div class="overflow-x-auto">
@@ -514,38 +515,38 @@
                 </td>
               </tr>
               <tr class="bg-sky-50/70 border-l-4 border-l-uni-cyan">
-                <td class="py-3.5 px-4 font-semibold text-uni-navy whitespace-nowrap">2. Center-Loaded (The Bowl)</td>
-                <td class="py-3.5 px-4 font-mono text-[11px] text-uni-cyan font-bold whitespace-nowrap">(5, 5, 6, 7, 7, 6, 5, 5, 4)</td>
+                <td class="py-3.5 px-4 font-semibold text-uni-navy whitespace-nowrap">2. Center Bowl (Max TH)</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] text-uni-cyan font-bold whitespace-nowrap">(5, 5, 6, 6, 6, 6, 6, 5, 5)</td>
                 <td class="py-3.5 px-4 font-bold text-emerald-600 whitespace-nowrap">~ 0.779 pcs/min (+1.96%)</td>
                 <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 25.10 pcs (+9.5%)</td>
                 <td class="py-3.5 px-4 font-bold text-emerald-700 whitespace-nowrap">0.0068 (Highest)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-emerald-100 text-emerald-800 font-semibold whitespace-nowrap">
-                    Optimal Choice
+                    Highest E[TH]
                   </span>
                 </td>
               </tr>
               <tr>
-                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">3. Front-Loaded</td>
-                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(7, 7, 6, 5, 5, 5, 5, 5, 5)</td>
-                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.771 pcs/min (+0.91%)</td>
-                <td class="py-3.5 px-4 text-rose-600 font-medium whitespace-nowrap">~ 26.80 pcs (+16.9%)</td>
-                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0018 (Poor)</td>
+                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">3. Front-Loaded (Extreme)</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(8, 7, 5, 5, 5, 5, 5, 5, 5)</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.770 pcs/min (+0.78%)</td>
+                <td class="py-3.5 px-4 text-rose-600 font-medium whitespace-nowrap">~ 27.60 pcs (+20.5%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0013 (Poorest)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-rose-100 text-rose-800 font-semibold whitespace-nowrap">
-                    Excess WIP Trap
+                    Highest E[WIP]
                   </span>
                 </td>
               </tr>
               <tr>
-                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">4. End-Loaded</td>
-                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(5, 5, 5, 5, 5, 5, 6, 7, 7)</td>
-                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.772 pcs/min (+1.04%)</td>
-                <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 23.90 pcs (+4.3%)</td>
-                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0081 (Starved)</td>
+                <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">4. End-Loaded (Extreme)</td>
+                <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(5, 5, 5, 5, 5, 5, 5, 7, 8)</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.771 pcs/min (+0.91%)</td>
+                <td class="py-3.5 px-4 font-medium text-emerald-700 whitespace-nowrap">~ 23.65 pcs (+3.2%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0094 (Low WIP)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
-                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-amber-100 text-amber-800 font-semibold whitespace-nowrap">
-                    Underutilized
+                  <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-sky-100 text-sky-800 font-semibold whitespace-nowrap">
+                    Lowest E[WIP]
                   </span>
                 </td>
               </tr>
@@ -645,16 +646,20 @@
         `
       },
       ctq: {
-        title: "Queue Waiting Time E[Wq] & Little's Law",
+        title: "Total Cycle Time E[CT] = E[Ws]",
         icon: "clock",
         colorClass: "bg-amber-100 text-amber-700",
         html: `
-          <p><strong>Definition:</strong> The average time a workpiece spends waiting in intermediate buffers before service begins at the next station.</p>
-          <p><strong>Little's Law Formula:</strong></p>
+          <p><strong>Managerial Definition:</strong> The total expected time required, on average, for one workpiece to be completely manufactured from raw material intake to final line departure.</p>
+          <p><strong>Queueing Formula:</strong></p>
+          <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
+            E[CT] = E[W<sub>s</sub>] = E[W<sub>q</sub>] + &sum;<sub>m=1</sub><sup>10</sup> (1 / &mu;<sub>m</sub>) = E[W<sub>q</sub>] + 10 &times; 1.0 min = E[W<sub>q</sub>] + 10.0 min
+          </div>
+          <p><strong>Queue Waiting Time (Little's Law):</strong></p>
           <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
             E[L<sub>q</sub>] = E[TH] &times; E[W<sub>q</sub>] &nbsp;&nbsp;&rarr;&nbsp;&nbsp; E[W<sub>q</sub>] = E[L<sub>q</sub>] / E[TH]
           </div>
-          <p><strong>In this Exercise:</strong> At baseline (E[L<sub>q</sub>] = 22.91 and E[TH] = 0.764), E[W<sub>q</sub>] = 22.91 / 0.764 &approx; <strong>29.98 minutes</strong>.</p>
+          <p><strong>At Baseline:</strong> E[W<sub>q</sub>] = 22.91 / 0.764 &approx; 29.98 min. Adding 10.0 min of raw machine processing yields a total production cycle time of <strong>E[CT] &approx; 39.98 minutes</strong>.</p>
         `
       },
       blocking: {
@@ -746,18 +751,19 @@
       resetStats();
     }
 
+    // EXTREME ALLOCATION PRESETS AS DISCUSSED IN CLASS
     function applyPreset(type) {
       if (type === 'base') {
         capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
         updateTotalCapacityKPI("Uniform (5×9)");
       } else if (type === 'center') {
-        capacities = [5, 5, 6, 7, 7, 6, 5, 5, 4];
+        capacities = [5, 5, 6, 6, 6, 6, 6, 5, 5];
         updateTotalCapacityKPI("Center Bowl (+5)");
       } else if (type === 'front') {
-        capacities = [7, 7, 6, 5, 5, 5, 5, 5, 5];
+        capacities = [8, 7, 5, 5, 5, 5, 5, 5, 5];
         updateTotalCapacityKPI("Front-Loaded (+5)");
       } else if (type === 'end') {
-        capacities = [5, 5, 5, 5, 5, 5, 6, 7, 7];
+        capacities = [5, 5, 5, 5, 5, 5, 5, 7, 8];
         updateTotalCapacityKPI("End-Loaded (+5)");
       }
       setPresetHighlight(type);
@@ -783,7 +789,8 @@
 
       document.getElementById("kpi-th").innerHTML = `0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
       document.getElementById("kpi-wip").innerHTML = `0.00 <span class="text-xs font-normal text-slate-500">workpieces</span>`;
-      document.getElementById("kpi-ctq").innerHTML = `0.00 <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-ctq").innerHTML = `10.00 <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-ctq-sub").innerHTML = `E[W<sub>q</sub>] 0.00 + 10.0 min raw`;
       document.getElementById("kpi-blocking").innerText = `0.0%`;
       document.getElementById("kpi-starvation").innerText = `0.0%`;
 
@@ -877,13 +884,15 @@
       
       const currentTH = (completed / simTime);
       const currentWIP = (cumulativeWIP / simTime);
-      const ctq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+      const wq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+      const ws = wq + 10.0; // E[CT] = E[Ws] = E[Wq] + 10 * (1/mu)
       const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
       const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
 
       document.getElementById("kpi-th").innerHTML = `${currentTH.toFixed(3)} <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
       document.getElementById("kpi-wip").innerHTML = `${currentWIP.toFixed(2)} <span class="text-xs font-normal text-slate-500">workpieces</span>`;
-      document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-ctq").innerHTML = `${ws.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+      document.getElementById("kpi-ctq-sub").innerHTML = `E[W<sub>q</sub>] ${wq.toFixed(2)} + 10.0 min raw`;
       document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
       document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
 
@@ -1103,13 +1112,15 @@
       if (simTime > 0) {
         const currentTH = (completed / simTime);
         const currentWIP = (cumulativeWIP / simTime);
-        const ctq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+        const wq = currentTH > 0 ? (currentWIP / currentTH) : 0;
+        const ws = wq + 10.0; // Managerial total cycle time E[CT] = E[Ws] = E[Wq] + 10*(1/mu)
         const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
         const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
 
         document.getElementById("kpi-th").innerHTML = `${currentTH.toFixed(3)} <span class="text-xs font-normal text-slate-500">pcs/min</span>`;
         document.getElementById("kpi-wip").innerHTML = `${currentWIP.toFixed(2)} <span class="text-xs font-normal text-slate-500">workpieces</span>`;
-        document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+        document.getElementById("kpi-ctq").innerHTML = `${ws.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
+        document.getElementById("kpi-ctq-sub").innerHTML = `E[W<sub>q</sub>] ${wq.toFixed(2)} + 10.0 min raw`;
         document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
         document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
 
@@ -1155,8 +1166,13 @@
     document.getElementById("btnFastForward").onclick = fastForwardToSteadyState;
     document.getElementById("btnReset").onclick = resetStats;
 
+    // DYNAMIC SPEED SCALING WITH MIN/SEC METRIC (TA FEEDBACK)
     document.getElementById("speedRange").oninput = (e) => {
-      document.getElementById("speedDisplay").innerText = `${e.target.value}x`;
+      const val = parseInt(e.target.value);
+      // At 60 FPS with step dt = 1/60s and 10*val sub-steps per frame, 
+      // simulated time per real second = (10 * val) / 10 = val * 0.6 sim-min/s
+      const minPerSec = (val * 0.6).toFixed(1);
+      document.getElementById("speedDisplay").innerText = `${val}x (~${minPerSec} sim-min/s)`;
     };
 
     updateChartYScale();
