@@ -1,6 +1,6 @@
 # Little's Lab
 
-An interactive discrete-event simulator and pedagogical decision-support tool designed for Operations Management coursework at the **University of Mannheim**.
+An interactive discrete-event simulator and pedagogical decision-support tool designed for Production Management & Variability coursework at the **University of Mannheim**.
 
 The application models stochastic serial flow production lines, visualizes the mechanics of **Blocking-After-Service (BAS)** and **Starvation**, demonstrates **Little's Law**, and benchmarks optimal buffer distribution profiles against the **Bowl Phenomenon**
 
