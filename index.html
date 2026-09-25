@@ -48,26 +48,20 @@
   <header class="bg-uni-navy text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center space-x-3.5">
-        <!-- CUSTOM LOGO (CONVEYOR, GEAR & PACKAGE) -->
         <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-sm border border-sky-100/30 shrink-0">
           <svg viewBox="0 0 64 64" fill="none" stroke="#001a3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
-            <!-- Gear -->
             <path d="M24 10 L28 10 L29 13 L33 15 L36 13 L39 16 L37 19 L39 23 L42 24 L42 26" />
             <path d="M18 13 L15 16 L17 19 L15 23 L12 24 L12 28 L15 29 L17 33 L15 36 L18 39 L21 37 L25 39 L26 42 L28 42" />
             <circle cx="27" cy="26" r="6.5" stroke-dasharray="16 4" />
-            <!-- Motion dashes -->
             <line x1="12" y1="40" x2="16" y2="40" />
             <line x1="12" y1="44" x2="20" y2="44" />
-            <!-- Box on Conveyor -->
             <rect x="27" y="27" width="21" height="19" rx="1.5" fill="#f8fafc" />
             <path d="M35 27 L35 34 L40 34 L40 27" />
             <line x1="43" y1="30" x2="48" y2="30" />
             <line x1="44" y1="34" x2="48" y2="34" />
             <line x1="35" y1="40" x2="40" y2="40" />
             <line x1="35" y1="43" x2="38" y2="43" />
-            <!-- Conveyor Belt -->
             <rect x="10" y="46" width="44" height="11" rx="5.5" fill="#ffffff" />
-            <!-- Rollers -->
             <circle cx="15.5" cy="51.5" r="1.6" fill="#001a3f" />
             <circle cx="21.5" cy="51.5" r="1.6" fill="#001a3f" />
             <circle cx="27.5" cy="51.5" r="1.6" fill="#001a3f" />
@@ -108,7 +102,7 @@
     <!-- TAB 1: SIMULATOR -->
     <div id="tab-sim" class="space-y-6">
 
-      <!-- KPI METRIC TILES WITH POPUPS -->
+      <!-- KPI METRIC TILES -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
         
         <!-- Throughput -->
@@ -298,7 +292,7 @@
         </div>
       </div>
 
-      <!-- LIVE TELEMETRY BAR CHART (DYNAMIC Y-AXIS) -->
+      <!-- LIVE TELEMETRY BAR CHART -->
       <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
         <div class="flex items-center justify-between mb-4">
           <div>
@@ -418,14 +412,14 @@
           <i data-lucide="shield-check" class="w-4 h-4 text-uni-cyan"></i>
           <h4 class="text-xs font-bold text-uni-navy uppercase tracking-wider">Methodology & Simulation Disclaimer</h4>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs leading-relaxed">
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
               <i data-lucide="cpu" class="w-3.5 h-3.5 text-uni-cyan"></i>
               Stochastic Engine
             </div>
             <p class="text-slate-600 text-[11px]">
-              Line dynamics and buffer occupancy are modeled via continuous discrete-event Monte Carlo simulation. Effective processing times are generated using inverse transform sampling: 
+              Processing times are generated using inverse transform sampling:
               <span class="block font-mono text-[10px] bg-slate-50 p-1 rounded my-1 border border-slate-100 text-slate-800">
                 T = -ln(1 - U) / &mu;
               </span>
@@ -434,20 +428,29 @@
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
-              <i data-lucide="activity" class="w-3.5 h-3.5 text-uni-cyan"></i>
-              Sample Variance vs. Benchmark
+              <i data-lucide="fast-forward" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Steady-State Definition
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise benchmark targets (E[TH] = 0.764, E[WIP<sub>q</sub>] = 22.91) represent asymptotic steady-state solutions derived from analytical queueing decompositions. Live browser simulations converge toward these values, but exhibit natural stochastic noise over finite runs. Use <strong>Steady State</strong> to jump straight to convergence.
+              A production line enters <strong>steady state</strong> when the probability distribution of station states and buffer occupancies becomes stationary and invariant over time (independent of initial empty conditions). Use <strong>Steady State</strong> to bypass the initial transient warm-up phase.
+            </p>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
+              <i data-lucide="activity" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Sample Variance
+            </div>
+            <p class="text-slate-600 text-[11px]">
+              The targets (E[TH] = 0.764, E[WIP<sub>q</sub>] = 22.91) represent asymptotic theoretical steady-state metrics. Live browser Monte Carlo runs naturally fluctuate around these figures due to finite sample variance before complete convergence.
             </p>
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
               <i data-lucide="factory" class="w-3.5 h-3.5 text-uni-cyan"></i>
-              Industrial Distribution Context
+              Industrial Context
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise assumes memoryless exponential service times (&mu; = 1.0, <i>c<sub>e</sub></i> = 1.0) for mathematical tractability. Real-world manufacturing assembly stations usually display lower natural cycle-time variance (<i>c<sub>e</sub></i> &approx; 0.2&ndash;0.5), with variability instead dominated by discrete machine outages modeled via MTTF and MTTR.
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, <i>c<sub>e</sub></i> = 1.0) for analytical solvability. Real assembly lines typically exhibit low natural cycle variance (<i>c<sub>e</sub></i> &approx; 0.2&ndash;0.5), with variability governed primarily by machine downtime (MTTF and MTTR).
             </p>
           </div>
         </div>
@@ -455,7 +458,7 @@
 
     </div>
 
-    <!-- TAB 3: STRATEGY DELTA COMPARISON (FORMATTED TABLE) -->
+    <!-- TAB 3: STRATEGY DELTA COMPARISON -->
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-2">Strategy Comparison: Allocating +5 Buffer Spaces</h2>
@@ -556,7 +559,6 @@
       </div>
 
       <div id="modalContent" class="text-xs text-slate-600 space-y-3 leading-relaxed border-t border-slate-100 pt-3">
-        <!-- Injected by JavaScript -->
       </div>
 
       <div class="mt-5 pt-3 border-t border-slate-100 flex justify-end">
@@ -595,7 +597,6 @@
   <script>
     lucide.createIcons();
 
-    // CLEAN CONCEPT DEFINITIONS REPOSITORY
     const conceptData = {
       th: {
         title: "Expected Throughput E[TH]",
@@ -691,7 +692,6 @@
       if (e.key === "Escape") closeModal();
     });
 
-    // SIMULATION ENGINE STATE (STARTS PAUSED)
     const NUM_M = 10;
     let capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
     let simTime = 0, completed = 0;
@@ -964,7 +964,6 @@
       ctx.textAlign = "left";
     }
 
-    // LIVE CHART (WITH DYNAMIC Y SCALING)
     const ctxLive = document.getElementById("liveChart").getContext("2d");
     const liveChart = new Chart(ctxLive, {
       type: "bar",
