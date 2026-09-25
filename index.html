@@ -240,7 +240,6 @@
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
             </button>
 
-            <!-- SPEED SLIDER WITH DYNAMIC MULTIPLIER AND SIM-MIN/SEC LABEL -->
             <div class="flex items-center gap-2 ml-2 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200 text-xs font-medium text-slate-600">
               <span>Speed:</span>
               <input type="range" id="speedRange" min="1" max="50" value="10" class="w-20 accent-sky-600">
@@ -418,7 +417,7 @@
         </div>
       </div>
 
-      <!-- METHODOLOGY & SIMULATION DISCLAIMER (WITH TIME COMPRESSION CARD) -->
+      <!-- METHODOLOGY & SIMULATION DISCLAIMER -->
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-slate-700 shadow-xs">
         <div class="flex items-center gap-2 mb-3">
           <i data-lucide="shield-check" class="w-4 h-4 text-uni-cyan"></i>
@@ -484,7 +483,7 @@
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Extreme Buffer Allocations (+5 Spaces)</h2>
         <p class="text-xs text-slate-500 mb-6">
-          Benchmarking the extreme cases of allocating 5 additional buffer spaces ($b_{\text{tot}} = 50$) to evaluate the trade-off between throughput maximization and inventory inflation.
+          Benchmarking the extreme cases of allocating 5 additional buffer spaces (b<sub>tot</sub> = 50) to evaluate the trade-off between throughput maximization and inventory inflation.
         </p>
 
         <div class="overflow-x-auto">
@@ -526,8 +525,8 @@
               <tr class="bg-sky-50/70 border-l-4 border-l-uni-cyan">
                 <td class="py-3.5 px-4 font-semibold text-uni-navy whitespace-nowrap">2. Center Bowl (Max TH)</td>
                 <td class="py-3.5 px-4 font-mono text-[11px] text-uni-cyan font-bold whitespace-nowrap">(5, 5, 6, 6, 6, 6, 6, 5, 5)</td>
-                <td class="py-3.5 px-4 font-bold text-emerald-600 whitespace-nowrap">~ 0.779 pcs/min (+1.96%)</td>
-                <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 25.10 pcs (+9.5%)</td>
+                <td class="py-3.5 px-4 font-bold text-emerald-600 whitespace-nowrap">~ 0.781 pcs/min (+2.2%)</td>
+                <td class="py-3.5 px-4 font-medium whitespace-nowrap">~ 25.40 pcs (+10.9%)</td>
                 <td class="py-3.5 px-4 font-bold text-emerald-700 whitespace-nowrap">0.0068 (Highest)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-emerald-100 text-emerald-800 font-semibold whitespace-nowrap">
@@ -538,9 +537,9 @@
               <tr>
                 <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">3. Front-Loaded (Extreme)</td>
                 <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(8, 7, 5, 5, 5, 5, 5, 5, 5)</td>
-                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.770 pcs/min (+0.78%)</td>
-                <td class="py-3.5 px-4 text-rose-600 font-medium whitespace-nowrap">~ 27.60 pcs (+20.5%)</td>
-                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0013 (Poorest)</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.768 pcs/min (+0.5%)</td>
+                <td class="py-3.5 px-4 text-rose-600 font-medium whitespace-nowrap">~ 27.80 pcs (+21.3%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0008 (Poorest)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-rose-100 text-rose-800 font-semibold whitespace-nowrap">
                     Highest E[WIP]
@@ -550,9 +549,9 @@
               <tr>
                 <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">4. End-Loaded (Extreme)</td>
                 <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(5, 5, 5, 5, 5, 5, 5, 7, 8)</td>
-                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.771 pcs/min (+0.91%)</td>
-                <td class="py-3.5 px-4 font-medium text-emerald-700 whitespace-nowrap">~ 23.65 pcs (+3.2%)</td>
-                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0094 (Low WIP)</td>
+                <td class="py-3.5 px-4 text-slate-700 whitespace-nowrap">~ 0.769 pcs/min (+0.7%)</td>
+                <td class="py-3.5 px-4 font-medium text-emerald-700 whitespace-nowrap">~ 23.20 pcs (+1.3%)</td>
+                <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">0.0167 (Starved)</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-sky-100 text-sky-800 font-semibold whitespace-nowrap">
                     Lowest E[WIP]
