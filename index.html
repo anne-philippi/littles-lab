@@ -266,7 +266,7 @@
             </div>
           </div>
 
-          <!-- ROW 2: Allocation Presets (Extreme Cases from Exercise) -->
+          <!-- ROW 2: Allocation Presets -->
           <div class="flex items-center flex-wrap gap-2 text-xs">
             <span class="font-semibold text-slate-700 whitespace-nowrap mr-1">Allocation Presets:</span>
             <button id="preset-base" onclick="applyPreset('base')" class="preset-btn px-3 py-1.5 rounded-md font-semibold bg-sky-100 text-uni-cyan border border-sky-300 ring-1 ring-sky-300 transition whitespace-nowrap">
@@ -411,20 +411,20 @@
           </p>
           <ul class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed">
             <li><strong>The Bowl Shape:</strong> For balanced flow lines with identical stations, buffers should be allocated symmetrically, with maximum capacity in the center.</li>
-            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking)[cite: 11].</li>
-            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers[cite: 11].</li>
-            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain[cite: 11].</li>
+            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking).</li>
+            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers.</li>
+            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain.</li>
           </ul>
         </div>
       </div>
 
-      <!-- METHODOLOGY & SIMULATION DISCLAIMER -->
+      <!-- METHODOLOGY & SIMULATION DISCLAIMER (WITH TIME COMPRESSION CARD) -->
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-slate-700 shadow-xs">
         <div class="flex items-center gap-2 mb-3">
           <i data-lucide="shield-check" class="w-4 h-4 text-uni-cyan"></i>
           <h4 class="text-xs font-bold text-uni-navy uppercase tracking-wider">Methodology & Simulation Disclaimer</h4>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs leading-relaxed">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs leading-relaxed">
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
               <i data-lucide="cpu" class="w-3.5 h-3.5 text-uni-cyan"></i>
@@ -449,6 +449,15 @@
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
+              <i data-lucide="gauge" class="w-3.5 h-3.5 text-uni-cyan"></i>
+              Simulation Clock & sim-min/s
+            </div>
+            <p class="text-slate-600 text-[11px]">
+              Machine service rates and Little's Law are calculated in <strong>simulated minutes</strong> (&mu; = 1.0 pcs/min). The speed slider displays <strong>sim-min/s</strong> (simulated minutes per real-time wall-clock second). At 10x (~6.0 sim-min/s), every real second simulates 6.0 minutes of factory operations, allowing 1 hour of factory data to be gathered in 10 real seconds.
+            </p>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
               <i data-lucide="activity" class="w-3.5 h-3.5 text-uni-cyan"></i>
               Sample Variance
             </div>
@@ -456,13 +465,13 @@
               The targets (E[TH] = 0.764, E[L<sub>q</sub>] = 22.91) represent asymptotic theoretical steady-state metrics derived from analytical queueing decompositions. Live browser Monte Carlo runs naturally fluctuate around these figures due to finite sample variance before complete convergence.
             </p>
           </div>
-          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200 md:col-span-2 lg:col-span-2">
             <div class="font-bold text-uni-navy mb-1 flex items-center gap-1.5">
               <i data-lucide="factory" class="w-3.5 h-3.5 text-uni-cyan"></i>
               Variability & Classes
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV)[cite: 11]. In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR[cite: 11].
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV). In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR.
             </p>
           </div>
         </div>
@@ -751,7 +760,6 @@
       resetStats();
     }
 
-    // EXTREME ALLOCATION PRESETS AS DISCUSSED IN CLASS
     function applyPreset(type) {
       if (type === 'base') {
         capacities = [5, 5, 5, 5, 5, 5, 5, 5, 5];
@@ -885,7 +893,7 @@
       const currentTH = (completed / simTime);
       const currentWIP = (cumulativeWIP / simTime);
       const wq = currentTH > 0 ? (currentWIP / currentTH) : 0;
-      const ws = wq + 10.0; // E[CT] = E[Ws] = E[Wq] + 10 * (1/mu)
+      const ws = wq + 10.0;
       const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
       const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
 
@@ -1113,7 +1121,7 @@
         const currentTH = (completed / simTime);
         const currentWIP = (cumulativeWIP / simTime);
         const wq = currentTH > 0 ? (currentWIP / currentTH) : 0;
-        const ws = wq + 10.0; // Managerial total cycle time E[CT] = E[Ws] = E[Wq] + 10*(1/mu)
+        const ws = wq + 10.0;
         const blockPct = ((cumulativeBlocked / simTime) * 100).toFixed(1);
         const starvePct = ((cumulativeStarved / simTime) * 100).toFixed(1);
 
@@ -1166,11 +1174,8 @@
     document.getElementById("btnFastForward").onclick = fastForwardToSteadyState;
     document.getElementById("btnReset").onclick = resetStats;
 
-    // DYNAMIC SPEED SCALING WITH MIN/SEC METRIC (TA FEEDBACK)
     document.getElementById("speedRange").oninput = (e) => {
       const val = parseInt(e.target.value);
-      // At 60 FPS with step dt = 1/60s and 10*val sub-steps per frame, 
-      // simulated time per real second = (10 * val) / 10 = val * 0.6 sim-min/s
       const minPerSec = (val * 0.6).toFixed(1);
       document.getElementById("speedDisplay").innerText = `${val}x (~${minPerSec} sim-min/s)`;
     };
