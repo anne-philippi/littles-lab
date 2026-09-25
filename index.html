@@ -74,7 +74,7 @@
         <div>
           <h1 class="text-2xl font-black tracking-tight leading-tight">Little's Lab</h1>
           <p class="text-xs text-sky-200">
-            Interactive Production Management Simulator
+            Interactive Operations Management Simulator
           </p>
         </div>
       </div>
@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <!-- Queue WIP (L_q / WIP_q) -->
+        <!-- Queue WIP -->
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
             <span class="flex items-center gap-1">
@@ -156,7 +156,7 @@
           </div>
         </div>
 
-        <!-- Waiting Time in Queue W_q / CT_q -->
+        <!-- Queue Waiting Time -->
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
             <span class="flex items-center gap-1">
@@ -458,10 +458,10 @@
 
     </div>
 
-    <!-- TAB 3: STRATEGY DELTA COMPARISON (FORMATTED TABLE) -->
+    <!-- TAB 3: STRATEGY DELTA COMPARISON -->
     <div id="tab-delta" class="hidden space-y-6">
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
-        <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Dual Optimization Problem (Weiss et al., 2015)</h2>
+        <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Dual Optimization Problem</h2>
         <p class="text-xs text-slate-500 mb-6">
           Maximizing expected throughput E[TH(b)] subject to total buffer capacity constraint &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup> = 50.
         </p>
@@ -606,8 +606,8 @@
         colorClass: "bg-emerald-100 text-emerald-700",
         html: `
           <p><strong>Definition:</strong> The average rate at which completed workpieces exit the final station (M<sub>10</sub>) of the flow line (parts/minute).</p>
-          <p><strong>Theoretical Context (OPM 561):</strong> Although each machine operates at an isolated processing rate of &mu; = 1.0, the coupled 10-station line achieves only <strong>E[TH] = 0.764</strong>. This shortfall is the <em>variability penalty</em> caused by stochastic blocking and starvation propagating across stations.</p>
-          <p><strong>Optimization (Weiss et al., 2015):</strong> In the dual buffer allocation problem, the objective is to maximize E[TH(b)] subject to a total buffer budget &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup>.</p>
+          <p><strong>Theoretical Context:</strong> Although each machine operates at an isolated processing rate of &mu; = 1.0, the coupled 10-station line achieves only <strong>E[TH] = 0.764</strong>. This shortfall is the <em>variability penalty</em> caused by stochastic blocking and starvation propagating across stations.</p>
+          <p><strong>Optimization:</strong> In the dual buffer allocation problem, the objective is to maximize E[TH(b)] subject to a total buffer budget &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup>.</p>
         `
       },
       wipq: {
@@ -616,7 +616,7 @@
         colorClass: "bg-sky-100 text-uni-cyan",
         html: `
           <p><strong>Definition:</strong> The expected total number of workpieces physically stored inside the intermediate decoupling buffers (b<sub>1</sub> through b<sub>9</sub>), excluding parts currently on machines.</p>
-          <p><strong>Course Notation (Slide 13 & 29):</strong> In OPM 561, expected inventory in queues is denoted as <strong>E[L<sub>q</sub>]</strong> or <strong>E[WIP<sub>q</sub>(b)]</strong>. At baseline (b<sub>tot</sub> = 45), E[L<sub>q</sub>] = 22.91 workpieces.</p>
+          <p><strong>Course Notation:</strong> Expected inventory in queues is denoted as <strong>E[L<sub>q</sub>]</strong> or <strong>E[WIP<sub>q</sub>(b)]</strong>. At baseline (b<sub>tot</sub> = 45), E[L<sub>q</sub>] = 22.91 workpieces.</p>
           <p><strong>Trade-Off:</strong> Buffers absorb variability and increase throughput, but also inflate working capital and lead times.</p>
         `
       },
@@ -625,12 +625,12 @@
         icon: "layers",
         colorClass: "bg-indigo-100 text-indigo-700",
         html: `
-          <p><strong>Definition:</strong> The sum of storage spaces across all intermediate buffers in the flow line (Slide 29 & 36):</p>
+          <p><strong>Definition:</strong> The sum of storage spaces across all intermediate buffers in the flow line:</p>
           <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
             b<sub>tot</sub> = &sum;<sub>m=1</sub><sup>M-1</sup> b<sub>m</sub> = b<sub>1</sub> + b<sub>2</sub> + ... + b<sub>9</sub>
           </div>
           <p><strong>Problem 1 Scenario:</strong> The baseline has 45 total slots (b<sub>m</sub> = 5). Question (a) tests how best to allocate <strong>5 additional spaces</strong> (reaching b<sub>tot</sub> = 50).</p>
-          <p><strong>Concavity Property:</strong> As shown on Slide 32, E[TH(b)] is strictly concave and monotonically increasing in b<sub>tot</sub>, exhibiting diminishing marginal returns.</p>
+          <p><strong>Concavity Property:</strong> E[TH(b)] is strictly concave and monotonically increasing in b<sub>tot</sub>, exhibiting diminishing marginal returns.</p>
         `
       },
       ctq: {
@@ -639,9 +639,9 @@
         colorClass: "bg-amber-100 text-amber-700",
         html: `
           <p><strong>Definition:</strong> The average time a workpiece spends waiting in intermediate buffers before service begins at the next station.</p>
-          <p><strong>Little's Law Formula (Slide 13 & 29):</strong></p>
+          <p><strong>Little's Law Formula:</strong></p>
           <div class="bg-slate-50 p-2.5 rounded text-center my-2 border border-slate-200 text-slate-800 font-semibold text-xs">
-            E[L<sub>q</sub>] = E[TH] &times; E[W<sub>q</sub>] &nbsp;&nbsp;&implies;&nbsp;&nbsp; E[W<sub>q</sub>] = E[L<sub>q</sub>] / E[TH]
+            E[L<sub>q</sub>] = E[TH] &times; E[W<sub>q</sub>] &nbsp;&nbsp;&rarr;&nbsp;&nbsp; E[W<sub>q</sub>] = E[L<sub>q</sub>] / E[TH]
           </div>
           <p><strong>In this Exercise:</strong> At baseline (E[L<sub>q</sub>] = 22.91 and E[TH] = 0.764), E[W<sub>q</sub>] = 22.91 / 0.764 &approx; <strong>29.98 minutes</strong>.</p>
         `
