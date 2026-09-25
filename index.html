@@ -105,20 +105,27 @@
       <!-- KPI METRIC TILES -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
         
-        <!-- Throughput -->
-        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
-            <span class="flex items-center gap-1">
-              Throughput E[TH]
-              <button onclick="openModal('th')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
-                <i data-lucide="info" class="w-3.5 h-3.5"></i>
-              </button>
-            </span>
-            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
-          </div>
+        <!-- Throughput with Convergence Indicator -->
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between relative overflow-hidden">
           <div>
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
+              <span class="flex items-center gap-1">
+                Throughput E[TH]
+                <button onclick="openModal('th')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
+                  <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                </button>
+              </span>
+              <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
+            </div>
             <div id="kpi-th" class="text-xl font-bold text-emerald-600">0.000 <span class="text-xs font-normal text-slate-500">pcs/min</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>0.764</strong></div>
+          </div>
+          <div class="mt-2 pt-2 border-t border-slate-100 flex flex-col gap-1">
+            <div class="text-[11px] text-slate-500">Base Target: <strong>0.764</strong>[cite: 1]</div>
+            <!-- Convergence Status Badge -->
+            <div id="regime-badge" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 w-fit">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+              <span>Transient Phase</span>
+            </div>
           </div>
         </div>
 
@@ -135,7 +142,7 @@
           </div>
           <div>
             <div id="kpi-wip" class="text-xl font-bold text-uni-cyan">0.00 <span class="text-xs font-normal text-slate-500">workpieces</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong></div>
+            <div class="text-[11px] text-slate-500 mt-1">Base Target: <strong>22.91</strong>[cite: 1]</div>
           </div>
         </div>
 
@@ -143,7 +150,7 @@
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
             <span class="flex items-center gap-1">
-              Capacity b<sub>tot</sub>
+              Capacity b<sub>tot</sub>[cite: 11]
               <button onclick="openModal('capacity')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
                 <i data-lucide="info" class="w-3.5 h-3.5"></i>
               </button>
@@ -160,7 +167,7 @@
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
             <span class="flex items-center gap-1">
-              Queue Time E[W<sub>q</sub>]
+              Queue Time E[W<sub>q</sub>][cite: 11]
               <button onclick="openModal('ctq')" title="Learn more" class="text-slate-400 hover:text-uni-cyan transition">
                 <i data-lucide="info" class="w-3.5 h-3.5"></i>
               </button>
@@ -169,7 +176,7 @@
           </div>
           <div>
             <div id="kpi-ctq" class="text-xl font-bold text-amber-600">0.00 <span class="text-xs font-normal text-slate-500">min</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Little's Law: <strong>E[L<sub>q</sub>] / E[TH]</strong></div>
+            <div class="text-[11px] text-slate-500 mt-1">Little's Law: <strong>E[L<sub>q</sub>] / E[TH]</strong>[cite: 11]</div>
           </div>
         </div>
 
@@ -213,15 +220,20 @@
       <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
           <div>
-            <h3 class="text-base font-bold text-uni-navy">10-Machine Serial Flow Line (BAS)</h3>
-            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks b<sub>1</sub> through b<sub>9</sub></p>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-uni-navy">10-Machine Serial Flow Line (BAS)</h3>
+              <span id="canvas-regime-tag" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                Transient (Warm-up)
+              </span>
+            </div>
+            <p class="text-xs text-slate-500">Visualizing stations M<sub>1</sub> through M<sub>10</sub> with 9 intermediate finite buffer racks b<sub>1</sub> through b<sub>9</sub>[cite: 1, 11]</p>
           </div>
           <div class="flex items-center flex-wrap gap-2">
             <button id="btnPlay" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-sm">
               <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Simulation
             </button>
             
-            <button id="btnFastForward" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white transition flex items-center gap-1.5 shadow-sm" title="Skip warm-up period directly to long-run steady state">
+            <button id="btnFastForward" class="px-3.5 py-1.5 rounded-md text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white transition flex items-center gap-1.5 shadow-sm" title="Advance to stationary regime (t >= 500) and eliminate warm-up bias">
               <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Steady State
             </button>
 
@@ -258,10 +270,10 @@
           <div class="flex items-center flex-wrap gap-2 text-xs">
             <span class="font-semibold text-slate-700 whitespace-nowrap mr-1">Allocation Presets:</span>
             <button id="preset-base" onclick="applyPreset('base')" class="preset-btn px-3 py-1.5 rounded-md font-semibold bg-sky-100 text-uni-cyan border border-sky-300 ring-1 ring-sky-300 transition whitespace-nowrap">
-              Exercise Baseline (5 each, 45 total)
+              Exercise Baseline (5 each, 45 total)[cite: 1]
             </button>
             <button id="preset-center" onclick="applyPreset('center')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
-              Center Bowl (+5)
+              Center Bowl (+5)[cite: 1]
             </button>
             <button id="preset-front" onclick="applyPreset('front')" class="preset-btn px-3 py-1.5 rounded-md font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition whitespace-nowrap">
               Front-Loaded (+5)
@@ -297,7 +309,7 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <h3 class="text-base font-bold text-uni-navy">Live Buffer Inventory Distribution</h3>
-            <p class="text-xs text-slate-500">Real-time simulation average queue WIP in each buffer E[L<sub>q,m</sub>] vs. installed buffer capacity b<sub>m</sub></p>
+            <p class="text-xs text-slate-500">Real-time simulation average queue WIP in each buffer E[L<sub>q,m</sub>] vs. installed buffer capacity b<sub>m</sub>[cite: 11]</p>
           </div>
           <span class="text-xs font-semibold px-2.5 py-1 bg-sky-50 text-uni-cyan rounded-md border border-sky-100">
             Real-Time Telemetry
@@ -324,7 +336,7 @@
         </div>
 
         <p class="text-sm text-slate-700 leading-relaxed">
-          "A company operates a flow production line with 10 machines. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute. Currently, a total buffer capacity of 45 is installed. The buffer capacity is equally spread out over the line. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = E[L<sub>q</sub>] = 22.91</strong>. The distribution of the WIP is depicted in the graph below."
+          "A company operates a flow production line with 10 machines[cite: 1]. Each machine has exponentially distributed effective processing times with rate 1 workpiece per minute[cite: 1]. Currently, a total buffer capacity of 45 is installed[cite: 1]. The buffer capacity is equally spread out over the line[cite: 1]. The resulting expected throughput is <strong>E[TH] = 0.764</strong> workpieces per minute and the expected total work in process stored in the buffers is <strong>E[WIP<sub>q</sub>] = E[L<sub>q</sub>] = 22.91</strong>[cite: 1, 11]. The distribution of the WIP is depicted in the graph below[cite: 1]."
         </p>
       </div>
 
@@ -352,18 +364,18 @@
             </h4>
             <div class="text-xs text-slate-700 space-y-2.5 leading-relaxed">
               <p>
-                Notice how buffer inventory descends monotonically from <strong>b<sub>1</sub> (3.48)</strong> down to <strong>b<sub>9</sub> (1.59)</strong> despite equal service rates (&mu; = 1.0) and equal capacities (b<sub>m</sub> = 5).
+                Notice how buffer inventory descends monotonically from <strong>b<sub>1</sub> (3.48)</strong> down to <strong>b<sub>9</sub> (1.59)</strong> despite equal service rates (&mu; = 1.0) and equal capacities (b<sub>m</sub> = 5)[cite: 1, 3].
               </p>
               <p>
-                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>. When a downstream disruption occurs, parts rapidly pile up in the front buffers.
+                <strong>The Upstream Mechanism:</strong> Machine 1 has infinite raw materials at its entrance and is <em>never starved</em>[cite: 1]. When a downstream disruption occurs, parts rapidly pile up in the front buffers[cite: 1].
               </p>
               <p>
-                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>. When starved of parts, it drains its preceding buffers to 0 almost instantaneously.
+                <strong>The Downstream Mechanism:</strong> Machine 10 has infinite room to discharge finished items and is <em>never blocked</em>[cite: 1]. When starved of parts, it drains its preceding buffers to 0 almost instantaneously[cite: 1].
               </p>
             </div>
           </div>
           <div class="mt-4 pt-3 border-t border-sky-200/60 text-[11px] font-semibold text-uni-navy">
-            Total Queue WIP = 3.48 + 3.11 + ... + 1.59 = <strong>22.91 workpieces</strong>
+            Total Queue WIP = 3.48 + 3.11 + ... + 1.59 = <strong>22.91 workpieces</strong>[cite: 1, 3]
           </div>
         </div>
       </div>
@@ -376,15 +388,15 @@
             <h3 class="text-sm font-bold text-uni-navy">Buffer Allocation (+5 Spaces)</h3>
           </div>
           <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
-            "The company wants to allocate 5 more buffer spaces. Make a suggestion where these buffer spaces should be allocated and provide the reasoning for your suggestion."
+            "The company wants to allocate 5 more buffer spaces. Make a suggestion where these buffer spaces should be allocated and provide the reasoning for your suggestion."[cite: 1]
           </p>
           <div class="text-xs text-slate-700 space-y-2 leading-relaxed">
             <p>
-              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers b<sub>4</sub>, b<sub>5</sub>, and b<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4).
+              <strong>Academic Solution:</strong> Allocate the 5 additional spaces in the <strong>center of the line</strong> (buffers b<sub>4</sub>, b<sub>5</sub>, and b<sub>6</sub>), forming a <em>bowl-shaped distribution</em> (e.g., capacities 5-5-6-7-7-6-5-5-4)[cite: 1].
             </p>
             <p>
               <strong>Theoretical Rationale (The Bowl Phenomenon):</strong>
-              Starvation waves propagate downstream while blocking waves propagate upstream. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back).
+              Starvation waves propagate downstream while blocking waves propagate upstream[cite: 1]. Center buffers act as the line's central damper, shielding the upstream half from downstream stalls and vice versa. Placing buffers at the extremities causes asymmetric waste (excess WIP at the front, persistent starvation at the back)[cite: 1].
             </p>
           </div>
         </div>
@@ -395,13 +407,13 @@
             <h3 class="text-sm font-bold text-uni-navy">General Rules of Thumb for Buffer Allocation</h3>
           </div>
           <p class="text-xs italic text-slate-600 mb-3 bg-slate-50 p-2.5 rounded border border-slate-100">
-            "Discuss general rules of thumb for the buffer allocation problem."
+            "Discuss general rules of thumb for the buffer allocation problem."[cite: 1]
           </p>
           <ul class="text-xs text-slate-700 space-y-2 list-disc pl-4 leading-relaxed">
             <li><strong>The Bowl Shape:</strong> For balanced flow lines with identical stations, buffers should be allocated symmetrically, with maximum capacity in the center.</li>
-            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking).</li>
-            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers.</li>
-            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain.</li>
+            <li><strong>Bottleneck Protection:</strong> If a station is slower (lower bottleneck rate r<sub>b</sub> / higher mean processing time t<sub>e</sub>), allocate buffers directly <em>before</em> it (to prevent starvation) and directly <em>after</em> it (to prevent blocking)[cite: 11].</li>
+            <li><strong>Variability Absorption (MTTF & MTTR):</strong> Stations with higher breakdown frequencies (lower <strong>MTTF</strong>), longer repair times (higher <strong>MTTR</strong>), or higher squared coefficients of variation (<strong>cv<sup>2</sup></strong>) require larger adjacent buffers[cite: 11].</li>
+            <li><strong>Diminishing Marginal Returns:</strong> Buffer allocation exhibits strict concavity. Adding buffer capacity beyond a certain threshold drastically inflates WIP with negligible throughput gain[cite: 11].</li>
           </ul>
         </div>
       </div>
@@ -432,7 +444,7 @@
               Steady-State Definition
             </div>
             <p class="text-slate-600 text-[11px]">
-              A production line enters <strong>steady state</strong> when the probability distribution of station states and buffer occupancies becomes stationary and invariant over time. Use <strong>Steady State</strong> to bypass the initial transient warm-up phase.
+              A production line enters <strong>steady state</strong> when the probability distribution of station states and buffer occupancies becomes stationary and invariant over time[cite: 11]. The badge indicates whether the system is in the transient warm-up phase (t &lt; 500) or stationary regime (t &ge; 500).
             </p>
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
@@ -441,7 +453,7 @@
               Sample Variance
             </div>
             <p class="text-slate-600 text-[11px]">
-              The targets (E[TH] = 0.764, E[L<sub>q</sub>] = 22.91) represent asymptotic theoretical steady-state metrics derived from analytical queueing decompositions. Live browser Monte Carlo runs naturally fluctuate around these figures due to finite sample variance before complete convergence.
+              The targets (E[TH] = 0.764, E[L<sub>q</sub>] = 22.91) represent asymptotic theoretical steady-state metrics derived from analytical queueing decompositions[cite: 1, 11]. Live browser Monte Carlo runs naturally fluctuate around these figures due to finite sample variance before complete convergence.
             </p>
           </div>
           <div class="bg-white p-3.5 rounded-lg border border-slate-200">
@@ -450,7 +462,7 @@
               Variability & Classes
             </div>
             <p class="text-slate-600 text-[11px]">
-              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV). In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR.
+              The exercise assumes memoryless exponential service times (&mu; = 1.0, cv<sub>s</sub><sup>2</sup> = 1.0), representing Moderate Variability (MV)[cite: 1, 11]. In industrial practice, raw times are often Low Variability (LV, cv &lt; 0.75), while effective times include outages governed by MTTF and MTTR[cite: 11].
             </p>
           </div>
         </div>
@@ -463,7 +475,7 @@
       <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
         <h2 class="text-base font-bold text-uni-navy mb-1">Strategy Comparison: Dual Optimization Problem</h2>
         <p class="text-xs text-slate-500 mb-6">
-          Maximizing expected throughput E[TH(b)] subject to total buffer capacity constraint &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup> = 50.
+          Maximizing expected throughput E[TH(b)] subject to total buffer capacity constraint &sum; b<sub>m</sub> = b<sub>tot</sub><sup>*</sup> = 50[cite: 1, 11].
         </p>
 
         <div class="overflow-x-auto">
@@ -493,8 +505,8 @@
               <tr class="bg-slate-50/50">
                 <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">1. Baseline (Uniform)</td>
                 <td class="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">(5, 5, 5, 5, 5, 5, 5, 5, 5)</td>
-                <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">0.764 pcs/min</td>
-                <td class="py-3.5 px-4 whitespace-nowrap">22.91 pcs</td>
+                <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">0.764 pcs/min[cite: 1]</td>
+                <td class="py-3.5 px-4 whitespace-nowrap">22.91 pcs[cite: 1]</td>
                 <td class="py-3.5 px-4 text-slate-500 whitespace-nowrap">Benchmark</td>
                 <td class="py-3.5 px-4 whitespace-nowrap">
                   <span class="inline-block px-2.5 py-1 rounded text-[11px] bg-slate-200 text-slate-700 font-semibold whitespace-nowrap">
@@ -776,12 +788,30 @@
       document.getElementById("kpi-blocking").innerText = `0.0%`;
       document.getElementById("kpi-starvation").innerText = `0.0%`;
 
+      updateConvergenceUI(0);
+
       for (let i = 0; i < 9; i++) {
         liveChart.data.datasets[0].data[i] = 0;
       }
       liveChart.data.datasets[1].data = capacities;
       updateChartYScale();
       liveChart.update('none');
+    }
+
+    function updateConvergenceUI(t) {
+      const badge = document.getElementById("regime-badge");
+      const tag = document.getElementById("canvas-regime-tag");
+      if (t >= 500) {
+        badge.className = "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 w-fit";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Stationary Regime</span>`;
+        tag.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
+        tag.innerText = "Stationary (Convergence Reached)";
+      } else {
+        badge.className = "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 w-fit";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span><span>Transient Phase (t=${Math.floor(t)})</span>`;
+        tag.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200";
+        tag.innerText = "Transient (Warm-up)";
+      }
     }
 
     function simStep(dt) {
@@ -857,6 +887,8 @@
       document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
       document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
       document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
+
+      updateConvergenceUI(simTime);
 
       for (let i = 0; i < 9; i++) {
         liveChart.data.datasets[0].data[i] = (bufferSums[i] / simTime).toFixed(2);
@@ -1081,6 +1113,8 @@
         document.getElementById("kpi-ctq").innerHTML = `${ctq.toFixed(2)} <span class="text-xs font-normal text-slate-500">min</span>`;
         document.getElementById("kpi-blocking").innerText = `${blockPct}%`;
         document.getElementById("kpi-starvation").innerText = `${starvePct}%`;
+
+        updateConvergenceUI(simTime);
 
         chartTimer += dt;
         if (chartTimer > 0.4) {
